@@ -1,0 +1,210 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini Content Administration - WordPress Automation Tool</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    {% include 'bubble_background.html' %}
+    {% include 'header.html' %}
+    
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="pricing-card">
+                    <h2 class="text-center mb-4">Gemini Content Generation Training</h2>
+                    
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>Content Generation Training Configuration</h4>
+                                </div>
+                                <div class="card-body">
+                                    <form method="POST" action="{{ url_for('gemini_admin') }}">
+                                        <div class="mb-3">
+                                            <label for="category" class="form-label">Website Category</label>
+                                            <select class="form-select" id="category" name="category" required>
+                                                <option value="" selected disabled>Choose a category</option>
+                                                {% for category in categories %}
+                                                <option value="{{ category.id }}">{{ category.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label class="form-label">Test Menu Items</label>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="menu_items" value="Home" id="menu_home" checked>
+                                                        <label class="form-check-label" for="menu_home">Home</label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="menu_items" value="About" id="menu_about" checked>
+                                                        <label class="form-check-label" for="menu_about">About</label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="menu_items" value="Services" id="menu_services" checked>
+                                                        <label class="form-check-label" for="menu_services">Services</label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="menu_items" value="Products" id="menu_products">
+                                                        <label class="form-check-label" for="menu_products">Products</label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="menu_items" value="Portfolio" id="menu_portfolio">
+                                                        <label class="form-check-label" for="menu_portfolio">Portfolio</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="menu_items" value="Blog" id="menu_blog">
+                                                        <label class="form-check-label" for="menu_blog">Blog</label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="menu_items" value="Contact" id="menu_contact" checked>
+                                                        <label class="form-check-label" for="menu_contact">Contact</label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="menu_items" value="Gallery" id="menu_gallery">
+                                                        <label class="form-check-label" for="menu_gallery">Gallery</label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="menu_items" value="FAQ" id="menu_faq">
+                                                        <label class="form-check-label" for="menu_faq">FAQ</label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="menu_items" value="Custom" id="menu_custom">
+                                                        <label class="form-check-label" for="menu_custom">Custom</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label for="customMenuItem" class="form-label">Custom Menu Item (if selected)</label>
+                                            <input type="text" class="form-control" id="customMenuItem" name="custom_menu_item" placeholder="Enter custom menu item name">
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label for="model" class="form-label">Gemini Model</label>
+                                            <select class="form-select" id="model" name="model" required>
+                                                <option value="gemini-pro" selected>Gemini Pro</option>
+                                                <option value="gemini-pro-vision">Gemini Pro Vision</option>
+                                                <option value="gemini-ultra">Gemini Ultra (if available)</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label for="temperature" class="form-label">Temperature: <span id="temperatureValue">0.7</span></label>
+                                            <input type="range" class="form-range" min="0" max="1" step="0.1" id="temperature" name="temperature" value="0.7" oninput="document.getElementById('temperatureValue').textContent = this.value">
+                                            <small class="form-text text-muted">Lower values produce more focused content, higher values more creative</small>
+                                        </div>
+                                        
+                                        <div class="text-center">
+                                            <button type="submit" class="btn btn-primary">Generate Training Prompts</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {% if training_data %}
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>Generated Training Prompts</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <h5>Category Training Prompt</h5>
+                                        <pre class="p-3 bg-light rounded" style="white-space: pre-wrap; word-break: keep-all;">{{ training_data.category_prompt }}</pre>
+                                    </div>
+                                    
+                                    {% if training_data.menu_prompts %}
+                                    <div class="mb-3">
+                                        <h5>Menu-Specific Training Prompts</h5>
+                                        {% for menu_item, prompt in training_data.menu_prompts.items() %}
+                                        <div class="card mb-2">
+                                            <div class="card-header">{{ menu_item }}</div>
+                                            <div class="card-body">
+                                                <pre style="white-space: pre-wrap; word-break: keep-all;">{{ prompt }}</pre>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    {% endif %}
+                                    
+                                    <div class="mb-3">
+                                        <h5>Combined Training Prompt</h5>
+                                        <pre class="p-3 bg-light rounded" style="white-space: pre-wrap; word-break: keep-all;">{{ training_data.combined_prompt }}</pre>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <h5>Image Description Prompt</h5>
+                                        <pre class="p-3 bg-light rounded" style="white-space: pre-wrap; word-break: keep-all;">{{ training_data.image_prompt }}</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>Training Documentation</h4>
+                                </div>
+                                <div class="card-body">
+                                    <h5>How to Improve Content Generation</h5>
+                                    <p>The Gemini content generation system is trained to create category-specific, relevant content based on the website category and menu structure. Here are tips for improving generation results:</p>
+                                    
+                                    <ol>
+                                        <li><strong>Use clear category definitions</strong> - Ensure website categories have detailed descriptions that explain their purpose and target audience</li>
+                                        <li><strong>Provide descriptive menu items</strong> - Menu items should include clear descriptions of what content should appear on each page</li>
+                                        <li><strong>Use appropriate temperature settings</strong> - Lower temperature (0.3-0.5) for more consistent, focused content; higher (0.7-0.9) for more creative variations</li>
+                                        <li><strong>Review and iterate</strong> - Content generation improves with feedback; note which prompts generate the best results</li>
+                                    </ol>
+                                    
+                                    <h5>Category-Specific Training</h5>
+                                    <p>Each website category has specific tone, focus, structure, and keyword guidance. You can view and edit these in the <code>gemini_content_trainer.py</code> file.</p>
+                                    
+                                    <h5>Testing New Categories</h5>
+                                    <p>To add training for a new category:</p>
+                                    <ol>
+                                        <li>Add the category to the database through the admin interface</li>
+                                        <li>Update the <code>category_templates</code> dictionary in <code>gemini_content_trainer.py</code></li>
+                                        <li>Test the content generation using this interface</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    {% include 'footer.html' %}
+</body>
+</html>
