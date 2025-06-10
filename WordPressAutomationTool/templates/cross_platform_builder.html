@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cross-Platform AI Website Builder</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+</head>
+<body>
+    {% include 'header.html' %}
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Cross-Platform AI Website Builder</h1>
+        <p class="text-center mb-4">Create and manage websites across multiple platforms with AI-powered tools.</p>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <form id="builder-form" method="POST" action="/cross_platform_builder/create">
+                    <div class="mb-3">
+                        <label for="platform" class="form-label">Select Platform</label>
+                        <select class="form-select" id="platform" name="platform" required>
+                            <option value="" selected disabled>Select a platform</option>
+                            <option value="wordpress">WordPress</option>
+                            <option value="wix">Wix</option>
+                            <option value="squarespace">Squarespace</option>
+                            <option value="custom_html">Custom HTML</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="website_name" class="form-label">Website Name</label>
+                        <input type="text" class="form-control" id="website_name" name="website_name" placeholder="Enter your website name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Website Description</label>
+                        <textarea class="form-control" id="description" name="description" rows="4" placeholder="Describe your website" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Create Website</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% include 'footer.html' %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
