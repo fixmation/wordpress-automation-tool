@@ -1,0 +1,39 @@
+<footer class="site-footer mt-5 d-flex flex-column align-items-center justify-content-center text-center" 
+        style="background-color: #180101a4; color: white; padding: 50px 0; 
+               border-top: 1px solid #9a000082; border-bottom: 1px solid #9a000082;">
+    
+    <div>
+        <a href="{{ url_for('terms') }}" style="color: #ffade7; font-size: 0.8rem; text-decoration: none;">Terms of Use</a> |
+        <a href="{{ url_for('privacy') }}" style="color: #ffade7; font-size: 0.8rem; text-decoration: none;">Privacy Policy</a> |
+        <a href="{{ url_for('payment_policy') }}" style="color: #ffade7; font-size: 0.8rem; text-decoration: none;">Payment Policy</a> |
+        <a href="{{ url_for('faq') }}" style="color: #ffade7; font-size: 0.8rem; text-decoration: none;">FAQ</a> |
+        <a href="{{ url_for('documentation') }}" style="color: #ffade7; font-size: 0.8rem; text-decoration: none;">Documentation</a> |        
+        <a href="{{ url_for('glossary') }}" style="color: #ffade7; font-size: 0.8rem; text-decoration: none;">Glossary</a> |
+        <a href="{{ url_for('admin_register') }}" style="color: #ffade7; font-size: 0.8rem; text-decoration: none;">Admin Register</a> |
+        <a href="{{ url_for('login') }}?admin=true" style="color: #ffade7; font-size: 0.8rem; text-decoration: none;">Admin Login</a>
+        <a href="/robots.txt" style="display: none;">Robots.txt</a>
+</div>
+
+        
+    <div class="company-profile text-center" style="margin-top: 15px;">
+        <p style="color: #ffcbe5; font-size: 0.9rem;">Empowering Digital Innovation by:</p>
+        
+        <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+            <img src="{{ url_for('static', filename='images/fixmation-logo.png') }}" 
+                 alt="Fixmation Products Logo" 
+                 style="width: 40px; height: auto;">
+            <p style="color: #ff4500; font-size: 0.9rem; font-weight: bold; margin: 0;">Fixmation Products</p> |
+            <a href="https://fixmation.com/" target="_blank" rel="noopener noreferrer" 
+               style="font-size: 0.8rem; text-decoration: none; color: #007bff;">
+                fixmation.com
+            </a>            
+        </div>        
+    </div>
+    </footer>
+
+<p></p>
+<p style="color: #fcd3e8; font-size: 0.7rem; text-align: center;">
+    &copy; 2025 WordPress Automation Tool. All Rights Reserved.
+  </p>
+  
+</footer>
