@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Content Generation - WordPress Automation Tool</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    {% include 'bubble_background.html' %}
+    {% include 'header.html' %}
+    
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="pricing-card">
+                    <h2 class="text-center mb-4">AI Content Generation</h2>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4>What is AI Content Generation?</h4>
+                            <p>Our advanced AI-powered content generation tool leverages state-of-the-art language models to create high-quality, engaging content for your WordPress website automatically. Using sophisticated natural language processing and machine learning algorithms, it analyzes your website's category, target audience, and style preferences to generate contextually relevant, SEO-optimized content that resonates with your readers.</p>
+                            <p>The system continuously learns and adapts from user feedback and industry trends to improve content quality and relevance. Whether you need blog posts, product descriptions, or landing page copy, our AI technology ensures consistent, professional content that maintains your brand voice while saving you valuable time.</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h4>Key Features</h4>
+                            <ul>
+                                <li>Automated blog post generation with topic research</li>
+                                <li>SEO-optimized content with keyword analysis</li>
+                                <li>Customizable content styles and tone</li>
+                                <li>Multi-language support with localization</li>
+                                <li>Product descriptions and feature highlights</li>
+                                <li>Landing page and sales copy generation</li>
+                                <li>Meta descriptions and title optimization</li>
+                                <li>Content readability analysis</li>
+                                <li>Brand voice consistency checker</li>
+                                <li>Plagiarism detection and uniqueness verification</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-4">
+                        <a href="{{ url_for('generate_content') }}" class="btn btn-primary">Start Content Generation</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    {% include 'footer.html' %}
+</body>
+</html>
