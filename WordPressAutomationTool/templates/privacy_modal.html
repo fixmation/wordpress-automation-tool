@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+    <style>
+        .modal-body {
+            color: white !important;
+        }
+        .modal-body h2,
+        .modal-body h3,
+        .modal-body p,
+        .modal-body ul,
+        .modal-body li {
+            color: white !important;
+            text-shadow: none !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Privacy Policy Modal (Automatically Triggered) -->
+    <div class="modal fade show" id="privacyModal" tabindex="-1" aria-labelledby="privacyModalLabel" aria-hidden="false" style="display: block; background: rgba(0, 0, 0, 0.5);">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="privacyModalLabel">Privacy Policy</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="window.history.back()"></button>
+                </div>
+                <div class="modal-body">
+                    <h2>Privacy Policy</h2>
+                    <p>Your privacy is important to us. This Privacy Policy explains how we collect, use, and protect your personal information.</p>
+                    
+                    <h3>1. Information Collection</h3>
+                    <p>We collect information that you provide directly to us, including:</p>
+                    <ul>
+                        <li>Name and contact information</li>
+                        <li>Login credentials</li>
+                        <li>Payment information</li>
+                        <li>Website details</li>
+                    </ul>
+                    
+                    <h3>2. Use of Information</h3>
+                    <p>We use the collected information to:</p>
+                    <ul>
+                        <li>Provide and maintain our services</li>
+                        <li>Process payments</li>
+                        <li>Send administrative information</li>
+                        <li>Improve our services</li>
+                    </ul>
+                    
+                    <h3>3. Data Protection</h3>
+                    <p>We implement security measures to protect your personal information.</p>
+                    
+                    <h3>4. Third-Party Services</h3>
+                    <p>We may use third-party services to process payments and host websites.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="window.history.back()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var myModal = new bootstrap.Modal(document.getElementById('privacyModal'));
+            myModal.show();
+        });
+        
+        // Close button handler
+        document.querySelector('[data-bs-dismiss="modal"]').addEventListener('click', function() {
+            window.history.back();
+        });
+    </script>
+</body>
+</html>
