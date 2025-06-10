@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - WordPress Automation Tool</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    {% include 'bubble_background.html' %}
+    {% include 'header.html' %}
+    
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="pricing-card">
+                    <h2 class="text-center mb-4">WordPress Automation Tool Blog</h2>
+                    
+                    <div class="row">
+                        <div class="col-md-8">
+                            <!-- Blog Posts Section -->
+                            <div class="blog-posts">
+                                <article class="blog-post mb-4" style="background: rgba(255, 255, 255, 0.2); padding: 20px; border-radius: 5px;">
+                                    <h3 class="text-white">Getting Started with WordPress Automation</h3>
+                                    <p style="color: #ffcbe5;">Published on July 1, 2024 by Fixmation Team</p>
+                                    <p style="color: #ffcbe5;">Learn how to streamline your website creation process using our WordPress Automation Tool. From server connection to theme selection, we break down each step.</p>
+                                    <a href="#" class="btn btn-primary btn-sm">Read More</a>
+                                </article>
+                                
+                                <article class="blog-post mb-4" style="background: rgba(255, 255, 255, 0.2); padding: 20px; border-radius: 5px;">
+                                    <h3 class="text-white">AI-Powered Content Generation Explained</h3>
+                                    <p style="color: #ffcbe5;">Published on June 15, 2024 by AI Experts</p>
+                                    <p style="color: #ffcbe5;">Discover how our AI technology generates unique, SEO-friendly content for your WordPress websites in minutes.</p>
+                                    <a href="#" class="btn btn-primary btn-sm">Read More</a>
+                                </article>
+                            </div>
+                            
+                            <!-- Pagination -->
+                            <nav aria-label="Blog navigation">
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                    </li>
+                                    <li class="page-item active">
+                                        <a class="page-link" href="#">1</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#">2</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#">Next</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <!-- Sidebar -->
+                            <div class="blog-sidebar">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        Categories
+                                    </div>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">WordPress Automation</li>
+                                        <li class="list-group-item">AI Content Generation</li>
+                                        <li class="list-group-item">Web Design</li>
+                                        <li class="list-group-item">Tutorials</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        Popular Posts
+                                    </div>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">Getting Started Guide</li>
+                                        <li class="list-group-item">Top 10 WordPress Plugins</li>
+                                        <li class="list-group-item">SEO Best Practices</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    {% include 'footer.html' %}
+</body>
+</html>
