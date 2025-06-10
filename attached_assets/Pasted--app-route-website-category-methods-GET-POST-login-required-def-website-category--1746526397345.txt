@@ -1,0 +1,69 @@
+@app.route("/website_category", methods=['GET', 'POST'])
+@login_required
+def website_category():
+    try:
+        # First, ensure all categories exist in the database
+        default_categories = [
+            {'name': 'eCommerce', 'description': 'Build an online store to sell products or services with features like shopping cart, payment processing, and inventory management'},
+            {'name': 'Restaurant', 'description': 'Create a restaurant website with menu displays, online ordering, reservations, and location information'},
+            {'name': 'Blog', 'description': 'Start a blog with a clean layout focused on content, categories, comments, and social sharing'},
+            {'name': 'Portfolio', 'description': 'Showcase your work with a professional portfolio featuring galleries, project descriptions, and contact information'},
+            {'name': 'Business', 'description': 'Present your business with a professional website including services, about us, testimonials, and contact forms'},
+            {'name': 'News', 'description': 'Create a news website with article categories, featured stories, and multimedia content'},
+            {'name': 'Social Network', 'description': 'Build a community website with user profiles, activity feeds, and member interactions'},
+            {'name': 'Educational', 'description': 'Develop an educational website with course listings, learning resources, and student portals'},
+            {'name': 'Real Estate', 'description': 'List properties with detailed information, photo galleries, and property search functionality'},
+            {'name': 'Nonprofit', 'description': 'Create a nonprofit website with donation systems, event calendars, and volunteer signups'}
+        ]
+
+        # Ensure all default categories exist in the database
+        for cat_data in default_categories:
+            category = WebsiteCategory.query.filter_by(name=cat_data['name']).first()
+            if not category:
+                new_category = WebsiteCategory(
+                    name=cat_data['name'],
+                    description=cat_data['description']
+                )
+                db.session.add(new_category)
+                logger.info(f"Added missing category: {cat_data['name']}")
+        
+        db.session.commit()
+
+        # Now fetch all categories ordered by ID
+        categories = WebsiteCategory.query.order_by(WebsiteCategory.id).all()
+        logger.info(f"Retrieved {len(categories)} website categories")
+
+        if request.method == 'POST':
+            if not current_user.server_connections:
+                flash('No server connection found. Please connect your server first.')
+                return redirect(url_for('connect_server'))
+            
+            category_id = request.form.get('category')
+            if not category_id:
+                flash('Please select a category')
+                return redirect(url_for('website_category'))
+
+            wp_install = WordPressInstallation.query.filter_by(
+                server_id=current_user.server_connections[-1].id
+            ).order_by(WordPressInstallation.id.desc()).first()
+
+            if wp_install:
+                wp_install.category_id = category_id
+                db.session.commit()
+                return redirect(url_for('select_theme'))
+            else:
+                flash('No WordPress installation found')
+                return redirect(url_for('wordpress_installation'))
+
+        return render_template(
+            'website_category.html',
+            categories=categories,
+            current_stage=3,
+            total_stages=8
+        )
+
+    except Exception as e:
+        logger.error(f"Error in website category selection: {e}")
+        logger.error(f"Traceback: {traceback.format_exc()}")
+        flash(f'An error occurred: {str(e)}')
+        return redirect(url_for('wordpress_installation'))
