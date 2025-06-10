@@ -1,0 +1,66 @@
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <script src="{{ url_for('static', filename='js/language.js') }}"></script>
+    <div class="container">
+        <a class="navbar-brand ms-3 text-center" href="{{ url_for('home') }}" data-translatable>WP Automation Tool</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+            <ul class="navbar-nav align-items-center">
+                {% if current_user.is_authenticated and current_user.is_admin %}
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{{ url_for('admin_register') }}" data-translatable>
+                        <i class="fas fa-user-shield me-2"></i><span>Admin Register</span>
+                    </a>
+                </li>
+                {% endif %}
+                
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{{ url_for('home') }}" data-translatable>
+                        <i class="fas fa-home me-2"></i><span>Home</span>
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="productsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-box me-2"></i><span>Products</span>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="productsDropdown">
+                        <li><a class="dropdown-item" href="{{ url_for('wordpress_automation_demo') }}" data-translatable>WordPress Automation</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('website_builder_intro') }}" data-translatable>Website Builder</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('content_generation_intro') }}" data-translatable>AI Content Generator</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="solutionsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-lightbulb me-2"></i><span>Solutions</span>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="solutionsDropdown">
+                        <li><a class="dropdown-item" href="{{ url_for('small_business') }}" data-translatable>Small Business</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('freelancers') }}" data-translatable>Freelancers</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('agencies') }}" data-translatable>Agencies</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="resourcesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-book me-2"></i><span>Resources</span>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="resourcesDropdown">
+                        <li><a class="dropdown-item" href="{{ url_for('blog') }}" data-translatable>Blog</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('tutorials') }}" data-translatable>Tutorials</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('case_studies') }}" data-translatable>Case Studies</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{{ url_for('contact') }}" data-translatable>
+                        <i class="fas fa-envelope me-2"></i><span>Contact</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center" href="{{ url_for('chat') }}" data-translatable>
+                        <i class="fas fa-robot me-2"></i><span>AI Chat</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
