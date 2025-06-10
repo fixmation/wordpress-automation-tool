@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Policy</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+    <style>
+        .modal-body {
+            color: white; /* White text color */
+            h2, h3, p, ul, li { color: white !important; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Payment Policy Modal (Automatically Triggered) -->
+    <div class="modal fade show" id="paymentPolicyModal" tabindex="-1" aria-labelledby="paymentPolicyModalLabel" aria-hidden="false" style="display: block; background: rgba(0, 0, 0, 0.5);">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="paymentPolicyModalLabel">Payment Policy</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="window.history.back()"></button>
+                </div>
+                <div class="modal-body">
+                    <h2>Payment Policy</h2>
+                    <p>At WordPress Automation Tool, we are committed to providing transparent and secure payment processes.</p>
+                    
+                    <h3>1. Subscription Plans</h3>
+                    <p>We offer various subscription plans to suit different needs:</p>
+                    <ul>
+                        <li>Free Plan: Basic features with limited access</li>
+                        <li>Basic Plan: Essential tools for beginners</li>
+                        <li>Professional Plan: Advanced features for professionals</li>
+                        <li>Premium Plan: Complete automation for businesses</li>
+                    </ul>
+                    
+                    <h3>2. Payment Methods & Fees</h3>
+                    <p>We accept major credit cards through our secure Stripe payment gateway.</p>
+                    <p>Additional charges may apply:</p>
+                    <ul>
+                        <li>Stripe processing fee: 2.9% + $0.30 per successful charge</li>
+                        <li>International card fee: Additional 1% for non-local cards</li>
+                        <li>Currency conversion fee: Up to 2% when paying in non-USD currencies</li>
+                        <li>Bank/card issuer fees: May vary by provider</li>
+                    </ul>
+                    
+                    <h3>3. Billing</h3>
+                    <p>Subscriptions are billed monthly and automatically renewed unless canceled.</p>
+                    <p>All fees are charged in USD and converted to your local currency at current exchange rates.</p>
+                    
+                    <h3>4. Refund Policy</h3>
+                    <p>We offer prorated refunds for unused portions of your subscription.</p>
+                    <p>Processing fees are non-refundable.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="window.history.back()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var myModal = new bootstrap.Modal(document.getElementById('paymentPolicyModal'));
+            myModal.show();
+        });
+        
+        // Close button handler
+        document.querySelector('[data-bs-dismiss="modal"]').addEventListener('click', function() {
+            window.history.back();
+        });
+    </script>
+</body>
+</html>
