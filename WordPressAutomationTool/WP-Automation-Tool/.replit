@@ -1,0 +1,20 @@
+modules = ["python-3.11"]
+
+[workflows]
+runButton = "Run"
+
+[[workflows.workflow]]
+name = "Run"
+author = 42334030
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd WordPressAutomationTool/WordPress && pkill -f \"python.*main.py\" 2>/dev/null || true && python main.py"
+
+[nix]
+channel = "stable-24_05"
+
+[[ports]]
+localPort = 5000
+externalPort = 80
