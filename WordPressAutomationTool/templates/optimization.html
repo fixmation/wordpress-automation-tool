@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optimization - WordPress Automation Tool</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    {% include 'bubble_background.html' %}
+    {% include 'header.html' %}
+    <script src="{{ url_for('static', filename='js/progress.js') }}"></script>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="stage-container">
+                <div class="pricing-card" style="background: rgba(255, 212, 239, 0.1);">
+                    <h2 class="text-center mb-4">Stage 9: Website Optimization</h2>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 90%" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+                        <div class="progress-text">Stage 9/10</div>
+                    </div>
+                    {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            <div class="alert alert-info">
+                                {% for message in messages %}
+                                    {{ message }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    {% endwith %}
+
+                    <form method="POST" action="{{ url_for('optimization') }}">
+                        <div class="mb-4">
+                            <h4>Google Analytics Integration</h4>
+                            <div class="mb-3">
+                                <label for="ga_tracking_id" class="form-label" data-bs-toggle="tooltip" data-bs-placement="top" title="Enter your Google Analytics tracking ID (Format: UA-XXXXXXXXX-X or G-XXXXXXXXXX)">
+                                    Google Analytics Tracking ID <i class="fas fa-info-circle"></i>
+                                </label>
+                                <input type="text" class="form-control" id="ga_tracking_id" name="ga_tracking_id">
+                            </div>
+                            <div class="analytics-integration-status">
+                                <p class="status-text"></p>
+                            </div>
+                            <button id="verify_ga" class="btn btn-sm btn-primary mt-2">Verify Google Analytics ID</button>
+
+                        </div>
+
+                        <div class="mb-4">
+                            <h4>Google Ads Integration</h4>
+                            <div class="mb-3">
+                                <label for="ads_conversion_id" class="form-label" data-bs-toggle="tooltip" data-bs-placement="top" title="Enter your Google Ads conversion tracking ID">
+                                    Conversion Tracking ID <i class="fas fa-info-circle"></i>
+                                </label>
+                                <input type="text" class="form-control" id="ads_conversion_id" name="ads_conversion_id">
+                            </div>
+                            <div class="mb-3">
+                                <label for="ads_remarketing_id" class="form-label" data-bs-toggle="tooltip" data-bs-placement="top" title="Enter your Google Ads remarketing tag ID">
+                                    Remarketing Tag ID <i class="fas fa-info-circle"></i>
+                                </label>
+                                <input type="text" class="form-control" id="ads_remarketing_id" name="ads_remarketing_id">
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <h4>Performance Optimization</h4>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="enable_caching" name="enable_caching" checked data-bs-toggle="tooltip" data-bs-placement="top" title="Enable WordPress caching for better performance">
+                                <label class="form-check-label" for="enable_caching">
+                                    Enable Caching <i class="fas fa-info-circle"></i>
+                                </label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="image_optimization" name="image_optimization" checked data-bs-toggle="tooltip" data-bs-placement="top" title="Automatically optimize and compress images">
+                                <label class="form-check-label" for="image_optimization">
+                                    Image Optimization <i class="fas fa-info-circle"></i>
+                                </label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="minify_assets" name="minify_assets" checked data-bs-toggle="tooltip" data-bs-placement="top" title="Minify CSS, JavaScript, and HTML files">
+                                <label class="form-check-label" for="minify_assets">
+                                    Minify Assets <i class="fas fa-info-circle"></i>
+                                </label>
+                            </div>
+                        </div>
+                        <button id="run_performance_audit" class="btn btn-sm btn-primary mt-2">Run Performance Audit</button>
+                        <div class="performance-audit-status" style="display: none;">
+                            <div class="progress mt-2">
+                                <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+                            </div>
+                            <p class="audit-status-text"></p>
+                        </div>
+
+
+                        <div class="text-center mt-3 d-flex justify-content-center align-items-center">
+                        <a href="{{ url_for('content_preview') }}" class="btn btn-secondary me-2">Back to Content</a>
+                        <button type="submit" class="btn btn-primary me-2" id="save-optimization-btn">Save Optimizations</button>
+                        <a href="{{ url_for('summary') }}" class="btn btn-success">View Summary</a>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize all tooltips
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            });
+            
+            // Form validation for the Save Optimizations button
+            const saveOptimizationBtn = document.getElementById('save-optimization-btn');
+            if (saveOptimizationBtn) {
+                saveOptimizationBtn.addEventListener('click', function(event) {
+                    const gaTrackingId = document.getElementById('ga_tracking_id').value;
+                    const adsConversionId = document.getElementById('ads_conversion_id').value;
+                    const adsRemarketingId = document.getElementById('ads_remarketing_id').value;
+                    
+                    // Check if any fields are filled
+                    const anyFieldFilled = gaTrackingId || adsConversionId || adsRemarketingId;
+                    
+                    // Only validate if fields are filled
+                    if (gaTrackingId && !(gaTrackingId.startsWith('UA-') || gaTrackingId.startsWith('G-'))) {
+                        event.preventDefault();
+                        alert('Invalid Google Analytics tracking ID format. Should start with UA- or G-.');
+                        return;
+                    }
+                    
+                    if (adsConversionId && !adsConversionId.startsWith('AW-')) {
+                        event.preventDefault();
+                        alert('Invalid Google Ads conversion ID format. Should start with AW-.');
+                        return;
+                    }
+                });
+            }
+            // Google Analytics verification
+            const verifyGaBtn = document.getElementById('verify_ga');
+            if (verifyGaBtn) {
+                verifyGaBtn.addEventListener('click', function() {
+                    const gaId = document.getElementById('ga_tracking_id').value;
+                    if (!gaId) {
+                        alert('Please enter a Google Analytics tracking ID');
+                        return;
+                    }
+
+                    const statusEl = document.querySelector('.analytics-integration-status');
+
+                    // Simulate verification process
+                    statusEl.className = 'analytics-integration-status alert alert-warning';
+                    statusEl.querySelector('.status-text').textContent = 'Verifying Google Analytics ID...';
+
+                    setTimeout(() => {
+                        if (gaId.startsWith('UA-') || gaId.startsWith('G-')) {
+                            statusEl.className = 'analytics-integration-status alert alert-success';
+                            statusEl.querySelector('.status-text').textContent = 'Google Analytics verified successfully!';
+                        } else {
+                            statusEl.className = 'analytics-integration-status alert alert-danger';
+                            statusEl.querySelector('.status-text').textContent = 'Invalid Google Analytics ID format. Should start with UA- or G-';
+                        }
+                    }, 1500);
+                });
+            }
+
+            // CDN provider change
+            const cdnProvider = document.getElementById('cdn_provider');
+            const cdnUrlContainer = document.querySelector('.cdn-url-container');
+
+            if (cdnProvider && cdnUrlContainer) {
+                cdnProvider.addEventListener('change', function() {
+                    if (this.value === '') {
+                        cdnUrlContainer.style.display = 'none';
+                    } else {
+                        cdnUrlContainer.style.display = 'block';
+                    }
+                });
+            }
+
+            // Performance audit button
+            const runAuditBtn = document.getElementById('run_performance_audit');
+            const auditStatus = document.querySelector('.performance-audit-status');
+            const progressBar = auditStatus?.querySelector('.progress-bar');
+            const statusText = auditStatus?.querySelector('.audit-status-text');
+
+            if (runAuditBtn && auditStatus && progressBar && statusText) {
+                runAuditBtn.addEventListener('click', function() {
+                    runAuditBtn.disabled = true;
+                    auditStatus.style.display = 'block';
+
+                    // Simulate performance audit process
+                    const steps = [
+                        { progress: 10, text: 'Analyzing page speed...' },
+                        { progress: 25, text: 'Checking image optimization...' },
+                        { progress: 40, text: 'Evaluating caching configuration...' },
+                        { progress: 60, text: 'Analyzing CSS and JavaScript...' },
+                        { progress: 80, text: 'Testing server response time...' },
+                        { progress: 95, text: 'Generating recommendations...' },
+                        { progress: 100, text: 'Audit complete! View detailed report below.' }
+                    ];
+
+                    let currentStep = 0;
+
+                    const interval = setInterval(() => {
+                        if (currentStep < steps.length) {
+                            progressBar.style.width = steps[currentStep].progress + '%';
+                            statusText.textContent = steps[currentStep].text;
+                            currentStep++;
+                        } else {
+                            clearInterval(interval);
+                            runAuditBtn.disabled = false;
+
+                            // Add audit results dynamically
+                            const resultsHtml = `
+                                <div class="audit-results mt-3">
+                                    <h5>Performance Audit Results</h5>
+                                    <div class="row text-center">
+                                        <div class="col">
+                                            <div class="score-circle" style="width: 60px; height: 60px; border-radius: 50%; background: conic-gradient(#4CAF50 0% 82%, #f3f3f3 82% 100%); margin: 0 auto; display: flex; align-items: center; justify-content: center;">
+                                                <span style="color: #333; font-weight: bold;">82</span>
+                                            </div>
+                                            <p>Performance</p>
+                                        </div>
+                                        <div class="col">
+                                            <div class="score-circle" style="width: 60px; height: 60px; border-radius: 50%; background: conic-gradient(#FFC107 0% 75%, #f3f3f3 75% 100%); margin: 0 auto; display: flex; align-items: center; justify-content: center;">
+                                                <span style="color: #333; font-weight: bold;">75</span>
+                                            </div>
+                                            <p>SEO</p>
+                                        </div>
+                                        <div class="col">
+                                            <div class="score-circle" style="width: 60px; height: 60px; border-radius: 50%; background: conic-gradient(#4CAF50 0% 93%, #f3f3f3 93% 100%); margin: 0 auto; display: flex; align-items: center; justify-content: center;">
+                                                <span style="color: #333; font-weight: bold;">93</span>
+                                            </div>
+                                            <p>Accessibility</p>
+                                        </div>
+                                        <div class="col">
+                                            <div class="score-circle" style="width: 60px; height: 60px; border-radius: 50%; background: conic-gradient(#4CAF50 0% 96%, #f3f3f3 96% 100%); margin: 0 auto; display: flex; align-items: center; justify-content: center;">
+                                                <span style="color: #333; font-weight: bold;">96</span>
+                                            </div>
+                                            <p>Best Practices</p>
+                                        </div>
+                                    </div>
+                                    <div class="recommendations mt-3">
+                                        <h6>Top Recommendations:</h6>
+                                        <ul class="list-group">
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                Optimize images further to improve load time
+                                                <span class="badge bg-warning rounded-pill">Medium</span>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                Enable text compression
+                                                <span class="badge bg-success rounded-pill">Easy</span>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                Remove unused CSS
+                                                <span class="badge bg-warning rounded-pill">Medium</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            `;
+
+                            // Add results after the progress bar
+                            auditStatus.insertAdjacentHTML('beforeend', resultsHtml);
+                        }
+                    }, 800);
+                });
+            }
+        });
+    </script>
+    {% include 'footer.html' %}
+</body>
+</html>
