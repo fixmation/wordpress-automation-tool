@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - WordPress Automation Tool</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+</head>
+<body>
+    {% include 'bubble_background.html' %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="pricing-card" style="background: rgba(255, 212, 239, 0.1);">
+                    <h2 class="text-center mb-4">
+                        {% if is_admin_login %}Admin Login{% else %}Login to WordPress Automation Tool{% endif %}
+                    </h2>
+                    {% if is_admin_login %}
+                    <div class="pricing-card mb-4" style="background: rgba(128, 0, 0, 0.5); border: 2px solid #f3aad2; border-radius: 5px;">
+                        <h4 class="text-center">Admin Access</h4>
+                        <p class="text-center">Login to access the admin dashboard and manage users, subscriptions and settings.</p>
+                        <div class="alert alert-info text-center">
+                            <i class="fas fa-info-circle"></i> Admin area is restricted to authorized personnel only.
+                        </div>
+                    </div>
+                    {% endif %}
+                    <form method="POST" action="{{ url_for('login') }}{% if is_admin_login %}?admin=true{% endif %}">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email address</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        {% if is_admin_login %}
+                        <div class="mb-3">
+                            <label for="admin_secret_key" class="form-label">Admin Secret Key</label>
+                            <input type="password" class="form-control" id="admin_secret_key" name="admin_secret_key" required>
+                        </div>
+                        {% endif %}
+                        <button type="submit" class="btn btn-primary w-100">
+                            {% if is_admin_login %}Admin Login{% else %}Login{% endif %}
+                        </button>
+                        <div class="text-center mt-3">
+                            {% if not is_admin_login %}
+                            <a href="{{ url_for('signup') }}" class="text-decoration-none">Create an account</a>
+                            {% endif %}
+                        </div>
+                        {% if not is_admin_login %}
+                        <div class="text-center mt-4">
+                            <p style="color: #ffffff;">Or login with:</p>
+                            <div class="d-flex justify-content-center gap-2">
+                                <button type="button" class="social-btn google-login" title="Login with Google">
+                                    <i class="fab fa-google"></i>
+                                </button>
+                                <button type="button" class="social-btn facebook-login" title="Login with Facebook">
+                                    <i class="fab fa-facebook-f"></i>
+                                </button>
+                                <button type="button" class="social-btn linkedin-login" title="Login with LinkedIn">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </button>
+                                <button type="button" class="social-btn github-login" title="Login with GitHub">
+                                    <i class="fab fa-github"></i>
+                                </button>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </form>
+                    <div class="text-center mt-3">
+                        <a href="{{ url_for('home') }}" class="text-decoration-none">Go back to Home page</a>
+                    </div>
+                </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/social-auth.js') }}"></script>
+</body>
+</html>
