@@ -1,0 +1,28 @@
+from WordPressAutomationTool.WordPress import WordPressPlatform
+
+platform = WordPressPlatform()
+
+@app.route("/generate_content", methods=['GET', 'POST'])
+@login_required
+def generate_content():
+    try:
+        wp_install = platform.get_latest_installation(current_user)
+        category = platform.get_category(wp_install)
+
+        if not wp_install or not category:
+            flash('Please select a website category first')
+            return redirect(url_for('website_category'))
+
+        if request.method == 'POST':
+            # TODO: Implement content generation based on selected plan
+            pass
+
+        return render_template('generate_content.html',
+                              category=category,
+                              current_stage=6,
+                              total_stages=8)
+
+    except Exception as e:
+        logger.error(f"Error generating content: {e}")
+        flash(f'An error occurred: {str(e)}')
+        return redirect(url_for('generate_menu'))
