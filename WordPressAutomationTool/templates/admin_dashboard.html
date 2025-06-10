@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Admin Dashboard - WordPress Automation Tool</title>
+    <!-- Your existing CSS links -->
+</head>
+
+<body>
+    {% include 'bubble_background.html' %}
+
+    <!-- Admin Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('admin_dashboard') }}">Admin Panel</a>
+            <div class="d-flex">
+                <a href="{{ url_for('user_dashboard') }}" class="btn btn-outline-light me-2">User View</a>
+                <a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <!-- Rest of your existing admin dashboard content -->
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <div class="pricing-card">
+
+
+                    <!-- User Management Section -->
+                    <div class="card mb-4" style="overflow-x: auto;">
+                        <div class="card-header">
+                            <h4>User Management</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-4">
+                                <div class="row flex-nowrap overflow-auto">
+                                    <div class="col-md-4">
+                                        <input type="text" id="emailSearch" class="form-control"
+                                            placeholder="Search by email..." style="color: #ff5a00;">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="text" id="registrationDateRange" class="form-control"
+                                            placeholder="Registration date range">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="text" id="lastLoginDateRange" class="form-control"
+                                            placeholder="Last login date range">
+                                    </div>
+                                </div>
+                            </div>
+                            <table id="userTable" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Email</th>
+                                        <th>Registration Date</th>
+                                        <th>Last Login</th>
+                                        <th>Subscription Status</th>
+                                        <th>Payment Due</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for user in users %}
+                                    <tr>
+                                        <td>{{ user.email }}</td>
+                                        <td>{{ user.created_at.strftime('%Y-%m-%d') }}</td>
+                                        <td>{{ user.last_login.strftime('%Y-%m-%d %H:%M') if user.last_login else
+                                            'Never' }}</td>
+                                        <td>
+                                            {% if user.subscription_plans %}
+                                            {{ user.subscription_plans[-1].status }}
+                                            {% else %}
+                                            No subscription
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if user.subscription_plans %}
+                                            {{ user.subscription_plans[-1].expires_at.strftime('%Y-%m-%d') if
+                                            user.subscription_plans[-1].expires_at else 'N/A' }}
+                                            {% else %}
+                                            N/A
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-warning btn-sm"
+                                                onclick="suspendUser({{ user.id }})">Suspend</button>
+                                            <button class="btn btn-danger btn-sm"
+                                                onclick="terminateSubscription({{ user.id }})">Terminate</button>
+                                            <button class="btn btn-success btn-sm"
+                                                onclick="reactivateUser({{ user.id }})">Revoke</button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Analytics Section -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Usage Analytics</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5>Total Users</h5>
+                                            <h2>{{ analytics.total_users }}</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5>Active Subscriptions</h5>
+                                            <h2>{{ analytics.active_subscriptions }}</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5>Total Revenue</h5>
+                                            <h2>${{ analytics.total_revenue }}</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-4">
+                                <canvas id="revenueChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Subscription Management Section -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Subscription Plans</h4>
+                        </div>
+                        <div class="card-body" style="overflow-x: auto;">
+                            <table class="table table-nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>Plan</th>
+                                        <th>Price</th>
+                                        <th>Active Users</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for plan in subscription_plans %}
+                                    <tr>
+                                        <td>{{ plan.name }}</td>
+                                        <td>${{ plan.price }}</td>
+                                        <td>{{ plan.active_users }}</td>
+                                        <td>
+                                            <a href="{{ url_for('edit_plan', plan_id=plan.id) }}"
+                                                class="btn btn-primary btn-sm">Edit</a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- Content Management Section -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Content Management</h4>
+                        </div>
+                        <div class="card-body">
+                                <h5 class="card-title">Content Management</h5>
+                                <p class="card-text">Manage and monitor content generation across the platform.</p>
+                                <div class="d-flex gap-2">
+                                    <a href="#" class="btn btn-outline-light">Manage Content</a>
+                                    <a href="{{ url_for('gemini_admin') }}" class="btn btn-outline-light">Gemini Training</a>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script>
+        // Initialize DataTables with custom search
+        $(document).ready(function () {
+            var table = $('#userTable').DataTable({
+                order: [[2, 'desc']], // Sort by last login by default
+                pageLength: 50
+            });
+
+            // Email search
+            $('#emailSearch').on('keyup', function () {
+                table.column(0).search(this.value).draw();
+            });
+
+            // Date range picker for registration date
+            $('#registrationDateRange').daterangepicker({
+                autoUpdateInput: false,
+                locale: {
+                    cancelLabel: 'Clear'
+                }
+            });
+
+            $('#registrationDateRange').on('apply.daterangepicker', function (ev, picker) {
+                $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+                // Custom filtering function
+                $.fn.dataTable.ext.search.push(
+                    function (settings, data, dataIndex) {
+                        var regDate = moment(data[1], 'YYYY-MM-DD');
+                        var start = picker.startDate;
+                        var end = picker.endDate;
+                        return (regDate.isSameOrAfter(start) && regDate.isSameOrBefore(end));
+                    }
+                );
+                table.draw();
+            });
+
+            // Date range picker for last login
+            $('#lastLoginDateRange').daterangepicker({
+                autoUpdateInput: false,
+                locale: {
+                    cancelLabel: 'Clear'
+                }
+            });
+
+            $('#lastLoginDateRange').on('apply.daterangepicker', function (ev, picker) {
+                $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+                // Custom filtering function
+                $.fn.dataTable.ext.search.push(
+                    function (settings, data, dataIndex) {
+                        var loginDate = moment(data[2], 'YYYY-MM-DD HH:mm');
+                        var start = picker.startDate;
+                        var end = picker.endDate;
+                        return (loginDate.isSameOrAfter(start) && loginDate.isSameOrBefore(end));
+                    }
+                );
+                table.draw();
+            });
+
+            // Clear filters
+            $('#registrationDateRange, #lastLoginDateRange').on('cancel.daterangepicker', function (ev, picker) {
+                $(this).val('');
+                $.fn.dataTable.ext.search.pop();
+                table.draw();
+            });
+        });
+
+        // User Management Functions
+        function suspendUser(userId) {
+            if (confirm('Are you sure you want to suspend this user?')) {
+                fetch(`/admin/suspend_user/${userId}`, {
+                    method: 'POST',
+                }).then(response => {
+                    if (response.ok) {
+                        location.reload();
+                    }
+                });
+            }
+        }
+
+        function terminateSubscription(userId) {
+            if (confirm('Are you sure you want to terminate this subscription?')) {
+                fetch(`/admin/terminate_subscription/${userId}`, {
+                    method: 'POST',
+                }).then(response => {
+                    if (response.ok) {
+                        location.reload();
+                    }
+                });
+            }
+        }
+
+        function reactivateUser(userId) {
+            if (confirm('Are you sure you want to reactivate this user?')) {
+                fetch(`/admin/reactivate_user/${userId}`, {
+                    method: 'POST',
+                }).then(response => {
+                    if (response.ok) {
+                        location.reload();
+                    }
+                });
+            }
+        }
+
+        // Revenue Chart
+        const ctx = document.getElementById('revenueChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {{ revenue_data | tojson | safe }},
+            options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Monthly Revenue'
+                }
+            }
+        }
+        });
+    </script>
+    {% include 'footer.html' %}
+</body>
+
+</html>
