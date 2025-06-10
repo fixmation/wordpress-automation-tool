@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - WordPress Automation Tool</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+    <style>
+        #saasTermsModal .modal-dialog {
+            max-width: 500px;
+        }
+        .btn-secondary {
+            background-color: red; /* Changed button color to red */
+        }
+        h2.dashboard-title {
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    {% block content %}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h2 class="mb-4 dashboard-title">User Dashboard</h2>
+                            <a href="{{ url_for('logout') }}" class="btn btn-outline-danger" style="background-color: white;">Logout</a>
+                        </div>
+                        <div class="alert alert-success">
+                            <strong>Welcome back, {{ current_user.username if current_user.username else current_user.email.split('@')[0] }}!</strong> 
+                            You are successfully logged in.
+                        </div>
+
+                        <!-- Quick Actions -->
+                        <div class="row mt-4">
+                            <div class="col-md-6">
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Quick Actions</h5>
+                                        <a href="{{ url_for('chat') }}" class="btn btn-success mb-2 w-100" style="height: 46px;">Chat with AI Assistant</a>
+                                        <a href="{{ url_for('chat_history') }}" class="btn btn-info mb-2 w-100">View Chat History</a>
+                                        <!-- SaaS Terms of Service Button -->
+                                        <button class="btn btn-secondary mb-2 w-100" data-bs-toggle="modal" data-bs-target="#saasTermsModal" title="Please review and agree to these terms to continue">
+                                            SaaS Terms of Service
+                                        </button>
+                                        <!-- Connect New Server -->
+                                        <a href="{{ url_for('connect_server') }}" class="btn btn-warning mb-2 w-100" id="connectServerBtn" style="display:none">Connect New Server</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Your Profile</h5>
+                                        <p><strong>Email:</strong> {{ current_user.email }}</p>
+                                        <p><strong>Member since:</strong> {{ current_user.created_at.strftime('%B %d, %Y') }}</p>
+                                        <p><strong>Last login:</strong> {{ current_user.last_login.strftime('%B %d, %Y at %H:%M') if current_user.last_login else 'First login' }}</p>
+                                        <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProfileModal">Edit Profile</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Recent Activity</h5>
+                                        <p>Your recent actions will appear here.</p>
+                                        <div class="d-flex align-items-center mb-2">
+                                            <button id="updateWpComponentsBtn" class="btn btn-success" style="background-color: #28a745; width: 240px; white-space: nowrap;" onclick="updateWordPressComponents()">Update WP Components</button>
+                                            <div id="wordpressInfoContainer" class="ms-2" style="display: none;"></div>
+                                        </div>
+                                        <div class="d-flex align-items-center mb-2">
+                                            <button class="btn" style="background-color: #6f42c1; color: white; width: 240px;" onclick="resumeInstallationProcess()">Resume Installation</button>
+                                            <div id="stageInfoContainer" class="ms-2 text-info">Started Domain name</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+<!-- Edit Profile Modal -->
+<div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editProfileModalLabel" style="color: white;">Edit Profile</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editProfileForm">
+                    <div class="mb-3">
+                        <label for="profileFirstName" class="form-label">First Name</label>
+                        <input type="text" class="form-control" id="profileFirstName" value="{{ current_user.first_name if current_user.first_name else '' }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="profileSurname" class="form-label">Surname</label>
+                        <input type="text" class="form-control" id="profileSurname" value="{{ current_user.surname if current_user.surname else '' }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="profileUsername" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="profileUsername" value="{{ current_user.username if current_user.username else current_user.email.split('@')[0] }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="profileEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="profileEmail" value="{{ current_user.email }}" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="saveProfileChanges()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function saveProfileChanges() {
+    // Implement AJAX to save changes and update the UI.
+    alert('Profile changes saved!');
+}
+</script>
+
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+
+    <!-- SaaS Terms Modal -->
+    <div class="modal fade" id="saasTermsModal" tabindex="-1" aria-labelledby="saasTermsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="SaaS_Terms_of_Use_Agreement" style="color: white;">SaaS Terms of Service</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="background: white; border: none;">
+                    <div style="max-height: 500px; overflow-y: auto;">
+                        {% include 'SaaS_Terms_of_Use_Agreement.html' %}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" style="background-color: #6c757d;" data-bs-dismiss="modal" id="cancelBtn">Cancel</button>
+                    <button type="button" class="btn btn-primary" style="background: #ff6600;" id="agreeBtn">
+                        I Agree & Continue
+                    </button>
+                </div>
+            </div>
+        </div>
+        <script>
+document.addEventListener('DOMContentLoaded', () => {
+            const connectServerBtn = document.getElementById('connectServerBtn');
+            const agreeBtn = document.getElementById('agreeBtn');
+            const cancelBtn = document.getElementById('cancelBtn');
+            const saasTermsModal = document.getElementById('saasTermsModal');
+            const modal = new bootstrap.Modal(saasTermsModal);
+
+            // Initially hide the Connect Server button
+            connectServerBtn.style.display = 'none';
+
+            // Ensure the button event listeners are properly set up
+            agreeBtn.addEventListener('click', function() {
+                // Show the Connect Server button
+                connectServerBtn.style.display = 'inline-block';
+                // Hide the modal
+                modal.hide();
+                // Log agreement for tracking purposes
+                console.log('User agreed to SaaS Terms of Service');
+            });
+            
+            // Ensure cancel button properly hides the Connect Server button
+            cancelBtn.addEventListener('click', function() {
+                connectServerBtn.style.display = 'none';
+                modal.hide();
+            });
+
+
+<!-- WordPress Details Modal -->
+<div class="modal fade" id="wordpressDetailsModal" tabindex="-1" aria-labelledby="wordpressDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #28a745; color: white;">
+                <h5 class="modal-title" id="wordpressDetailsModalLabel" style="color: white;">WordPress Installation Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="wordpressDetailsContent">
+                    Loading...
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <a href="/summary" class="btn btn-primary">View Full Summary</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+            // Handle modal close properly
+            document.getElementById('saasTermsModal').addEventListener('hidden.bs.modal', (event) => {
+                // If modal was closed without clicking either button, treat as cancel
+                if (event.target === saasTermsModal && connectServerBtn.style.display === 'none') {
+                    cancelBtn.click();
+                }
+            });
+        });
+        </script>
+    </div>
+
+    <!-- Updates Modal -->
+    <div class="modal fade" id="updatesModal" tabindex="-1" aria-labelledby="updatesModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updatesModalLabel" style="color: white !important;">Available Updates</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="background: rgba(255,212,239,0.5);">
+                    <div id="updateResults">
+                        <div class="update-section mb-3">
+                            <h6>WordPress Core</h6>
+                            <div id="coreUpdateStatus">Checking...</div>
+                            <button type="button" class="btn btn-sm btn-secondary update-action-btn" id="updateCoreBtn">Update Core</button>
+                        </div>
+                        <div class="update-section mb-3">
+                            <h6>Themes</h6>
+                            <div id="themeUpdateStatus">Checking...</div>
+                            <button type="button" class="btn btn-sm btn-secondary update-action-btn" id="updateThemesBtn">Update Themes</button>
+                        </div>
+                        <div class="update-section mb-3">
+                            <h6>Plugins</h6>
+                            <div id="pluginUpdateStatus">Checking...</div>
+                            <button type="button" class="btn btn-sm btn-secondary update-action-btn" id="updatePluginsBtn">Update Plugins</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    function checkUpdates(installationId) {
+        // Show modal
+        const modal = new bootstrap.Modal(document.getElementById('updatesModal'));
+        modal.show();
+
+        // Reset status messages
+        document.getElementById('coreUpdateStatus').innerHTML = 'Checking...';
+        document.getElementById('themeUpdateStatus').innerHTML = 'Checking...';
+        document.getElementById('pluginUpdateStatus').innerHTML = 'Checking...';
+
+        // Check WordPress core updates
+        fetch(`/api/check_updates/${installationId}/core`)
+            .then(response => response.json())
+            .then(data => {
+                const status = data.update_available ? 
+                    `<span class="text-warning">Update available to version ${data.latest_version}</span>` :
+                    '<span class="text-success">Up to date</span>';
+                document.getElementById('coreUpdateStatus').innerHTML = status;
+            })
+            .catch(error => {
+                document.getElementById('coreUpdateStatus').innerHTML = 
+                    '<span class="text-danger">Error checking updates</span>';
+            });
+
+        // Check theme updates
+        fetch(`/api/check_updates/${installationId}/themes`)
+            .then(response => response.json())
+            .then(data => {
+                const updates = data.updates_available;
+                const status = updates.length > 0 ?
+                    `<span class="text-warning">${updates.length} theme updates available</span>` :
+                    '<span class="text-success">All themes up to date</span>';
+                document.getElementById('themeUpdateStatus').innerHTML = status;
+            })
+            .catch(error => {
+                document.getElementById('themeUpdateStatus').innerHTML = 
+                    '<span class="text-danger">Error checking updates</span>';
+            });
+
+        // Check plugin updates
+        fetch(`/api/check_updates/${installationId}/plugins`)
+            .then(response => response.json())
+            .then(data => {
+                const updates = data.updates_available;
+                const status = updates.length > 0 ?
+                    `<span class="text-warning">${updates.length} plugin updates available</span>` :
+                    '<span class="text-success">All plugins up to date</span>';
+                document.getElementById('pluginUpdateStatus').innerHTML = status;
+            })
+            .catch(error => {
+                document.getElementById('pluginUpdateStatus').innerHTML = 
+                    '<span class="text-danger">Error checking updates</span>';
+            });
+    }
+    </script>
+
+    </body>
+</html>
