@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Generation - WordPress Automation Tool</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+</head>
+<body>
+   {% include 'bubble_background.html' %}
+   {% include 'header.html' %}
+   <script src="{{ url_for('static', filename='js/progress.js') }}"></script>
+   <div class="container mt-5">
+       <div class="row justify-content-center">
+           <div class="stage-container">
+               <div class="pricing-card" style="background: rgba(255, 212, 239, 0.1);">
+                   <h2 class="text-center mb-4">Stage 6: Content Generation</h2>
+                   <div class="progress">
+                       <div class="progress-bar" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                       <div class="progress-text">Stage 6/10</div>
+                   </div>
+                   <p class="text-center mb-4">AI-Generated Content for {{ category.name }} Website</p>
+
+                   {% with messages = get_flashed_messages() %}
+                       {% if messages %}
+                           <div class="alert alert-info">
+                               {% for message in messages %}
+                                   {{ message }}
+                               {% endfor %}
+                           </div>
+                       {% endif %}
+                   {% endwith %}
+
+                   <div class="row mb-4">
+                       <div class="col-md-12">
+                           <div class="card" style="background-color: rgba(139, 69, 19, 0.7); border: 1px solid white;">
+                               <div class="card-body text-white">
+                                   <h5 class="card-title">Free Trial Plan</h5>
+                                   <p class="text-muted" style="color: #ffcbe5 !important;">Limited Features</p>
+                                   <ul class="list-unstyled" style="color: #ffcbe5 !important;">
+                                       <li><i class="fas fa-check me-2"></i>Single Page Content Generation</li>
+                                       <li><i class="fas fa-check me-2"></i>Basic Image Description</li>
+                                       <li><i class="fas fa-check me-2"></i>Limited Media Library</li>
+                                   </ul>
+                                   <div class="text-center mt-3">
+                                       <a href="{{ url_for('content_image_generation') }}" class="btn btn-success w-100">
+                                           Continue with Free Trial
+                                       </a>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+
+                   <div class="subscription-plans mb-4">
+                       <div class="row">
+                           {% for plan in ['basic', 'professional', 'premium'] %}
+                           <div class="col-12 col-md-12" style="margin-bottom: 15px;">
+                               <div class="card" style="background-color: rgba(139, 69, 19, 0.7); border: 1px solid white;">
+                                   <div class="card-body text-white">
+                                       <h5 class="card-title">{{ plan.title() }} Plan</h5>
+                                       <p class="text-muted" style="color: #ffcbe5 !important;" id="{{ plan }}-price">
+                                           {{ {'basic': '$9.99', 'professional': '$19.99', 'premium': '$39.99'}[plan] }}/month
+                                       </p>
+                                       <ul class="list-unstyled" style="color: #ffcbe5 !important;">
+                                           {% if plan == 'basic' %}
+                                               <li><i class="fas fa-check me-2"></i>Homepage Content</li>
+                                               <li><i class="fas fa-check me-2"></i>About Us Page</li>
+                                               <li><i class="fas fa-check me-2"></i>Contact Page</li>
+                                           {% elif plan == 'professional' %}
+                                               <li><i class="fas fa-check me-2"></i>All Basic Plan Features</li>
+                                               <li><i class="fas fa-check me-2"></i>Services/Products Pages</li>
+                                               <li><i class="fas fa-check me-2"></i>Blog Posts (5)</li>
+                                               <li><i class="fas fa-check me-2"></i>FAQ Page</li>
+                                           {% else %}
+                                               <li><i class="fas fa-check me-2"></i>All Professional Plan Features</li>
+                                               <li><i class="fas fa-check me-2"></i>Blog Posts (15)</li>
+                                               <li><i class="fas fa-check me-2"></i>Custom Landing Pages (3)</li>
+                                               <li><i class="fas fa-check me-2"></i>SEO Optimization</li>
+                                               <li><i class="fas fa-check me-2"></i>Social Media Content</li>
+                                           {% endif %}
+                                       </ul>
+                                       <form action="/create_checkout_session" method="POST">
+                                           <input name="plan" type="hidden" value="{{ plan }}">
+                                           <input name="display_currency" type="hidden" value="USD">
+                                           <button class="btn btn-primary w-100 mb-2" id="{{ plan }}-plan-btn" type="submit">
+                                               <i class="fas fa-credit-card me-2"></i>Subscribe Now
+                                           </button>
+                                           <a class="btn btn-link" href="{{ url_for('payment_cancel') }}">Cancel</a>
+                                       </form>
+                                   </div>
+                               </div>
+                           </div>
+                           {% endfor %}
+                       </div>
+                   </div>
+                   <div class="text-center mt-4">
+                       <div class="currency-selector mb-3">
+                           <label for="currency-select" style="color: #ffcbe5;">Select Currency:</label>
+                           <select id="currency-select" class="form-select form-select-sm mx-auto" style="max-width: 200px;">
+                               <option value="USD">USD - US Dollar</option>
+                               <option value="EUR">EUR - Euro</option>
+                               <option value="GBP">GBP - British Pound</option>
+                               <option value="INR">INR - Indian Rupee</option>
+                               <option value="JPY">JPY - Japanese Yen</option>
+                               <option value="AUD">AUD - Australian Dollar</option>
+                               <option value="CAD">CAD - Canadian Dollar</option>
+                               <option value="LKR">LKR - Sri Lankan Rupee</option>
+                           </select>
+                       </div>
+                      <p class="text-muted" style="color: #ffcbe5 !important; font-size: 0.8rem;">
+                          By proceeding with subscription, you agree to our 
+                          <a href="/payment_policy" style="color: #ff6600;">Payment Policy</a>
+                         including processing fees and charges.
+                      </p>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+  <script src="https://js.stripe.com/v3/"></script>
+  <script src="{{ url_for('static', filename='js/language.js') }}"></script>
+  <script>
+      // Currency conversion function
+      async function convertCurrency(amount, fromCurrency, toCurrency) {
+          try {
+              const response = await fetch(`/api/convert-currency?amount=${amount}&from=${fromCurrency}&to=${toCurrency}`);
+              const data = await response.json();
+              return data.convertedAmount.toFixed(2);
+          } catch (error) {
+              console.error('Currency conversion error:', error);
+              return amount;
+          }
+      }
+
+      // Detect user's location and update prices
+      async function updatePricesForLocation() {
+          try {
+              const response = await fetch('https://ipapi.co/json/');
+              const locationData = await response.json();
+              const currency = locationData.currency || 'USD';
+
+              const plans = [
+                  {id: 'basic', basePrice: 9.99},
+                  {id: 'professional', basePrice: 19.99},
+                  {id: 'premium', basePrice: 39.99}
+              ];
+
+              for (const plan of plans) {
+                  const convertedPrice = await convertCurrency(plan.basePrice, 'USD', currency);
+                  const priceElement = document.getElementById(`${plan.id}-price`);
+                  if (priceElement) {
+                      priceElement.textContent = `${convertedPrice} ${currency}/month`;
+                  }
+
+                  // Update hidden currency input
+                  const formElement = document.querySelector(`form input[name="plan"][value="${plan.id}"]`).closest('form');
+                  if (formElement) {
+                      const hiddenCurrencyInput = formElement.querySelector('input[name="display_currency"]');
+                      if (hiddenCurrencyInput) {
+                          hiddenCurrencyInput.value = currency;
+                      }
+                  }
+              }
+          } catch (error) {
+              console.error('Location detection error:', error);
+          }
+      }
+
+      // Initialize Stripe
+      const stripe = Stripe('{{ stripe_publishable_key }}', {
+          apiVersion: '2024-04-10'
+      });
+
+      // Handle form submissions for each plan
+      ['basic', 'professional', 'premium'].forEach(function(plan) {
+          const btn = document.getElementById(plan + '-plan-btn');
+          if (btn) {
+              btn.addEventListener('click', function(e) {
+                  e.preventDefault();
+
+                  // Show loading indicator
+                  const loadingMsg = document.createElement('div');
+                  loadingMsg.className = 'alert alert-info mt-3';
+                  loadingMsg.innerHTML = 'Processing payment request...';
+                  document.querySelector('.subscription-plans').prepend(loadingMsg);
+
+                  // Disable the button to prevent multiple clicks
+                  this.disabled = true;
+
+                  fetch(`/create_checkout_session`, {
+                      method: 'POST',
+                      headers: {
+                          'Accept': 'application/json'
+                      },
+                      body: new FormData(this.closest('form'))
+                  })
+                  .then(function(response) {
+                      if (!response.ok) {
+                          return response.json().then(data => {
+                              throw new Error(data.error || 'Network response was not ok: ' + response.statusText);
+                          });
+                      }
+                      return response.json();
+                  })
+                  .then(function(session) {
+                      // Remove loading message
+                      if (loadingMsg.parentNode) {
+                          loadingMsg.parentNode.removeChild(loadingMsg);
+                      }
+
+                      if (session.url) {
+                          console.log("Redirecting to Stripe checkout URL:", session.url);
+                          // Use window.location.href for more reliable redirection
+                          window.location.href = session.url;
+
+                          // Add a fallback if redirection doesn't happen immediately
+                          setTimeout(function() {
+                              // Create a button for manual redirect
+                              const manualRedirectDiv = document.createElement('div');
+                              manualRedirectDiv.className = 'alert alert-warning mt-3';
+                              manualRedirectDiv.innerHTML = `
+                                  <p>If you are not automatically redirected, please click the button below:</p>
+                                  <a href="${session.url}" class="btn btn-primary" target="_blank">Go to Checkout</a>
+                              `;
+                              document.querySelector('.subscription-plans').prepend(manualRedirectDiv);
+                          }, 3000);
+                      } else if (session.id) {
+                          console.log("Using redirectToCheckout with session ID:", session.id);
+                          return stripe.redirectToCheckout({ sessionId: session.id });
+                      } else {
+                          throw new Error('No checkout session created');
+                      }
+                  })
+                  .catch(function(error) {
+                      console.error('Payment Error:', error);
+                      btn.disabled = false;
+
+                      // Remove loading message if it exists
+                      if (loadingMsg.parentNode) {
+                          loadingMsg.parentNode.removeChild(loadingMsg);
+                      }
+
+                      // Create a more visible error notification
+                      const errorDiv = document.createElement('div');
+                      errorDiv.className = 'alert alert-danger mt-3';
+                      errorDiv.innerHTML = '<strong>Payment Error:</strong> ' + error.message + 
+                      '<p>If you\'re experiencing issues with card payments, please try the following:</p>' +
+                      '<ul>' +
+                      '<li>Make sure your browser allows cookies and doesn\'t block popups</li>' +
+                      '<li>Try using a different browser</li>' +
+                      '<li>Try the free plan option if you continue to experience issues</li>' +
+                      '</ul>' +
+                      '<button class="btn btn-sm btn-outline-secondary mt-2" id="retry-payment">Retry Payment</button>';
+
+                      document.querySelector('.subscription-plans').prepend(errorDiv);
+
+                      // Add event listener to retry button
+                      document.getElementById('retry-payment').addEventListener('click', function() {
+                          errorDiv.parentNode.removeChild(errorDiv);
+                          btn.disabled = false;
+                          btn.click();
+                      });
+                  });
+              });
+          }
+      });
+
+      // Update prices on page load and set up currency selector
+      document.addEventListener('DOMContentLoaded', function() {
+          // Auto-detect location and update prices
+          updatePricesForLocation();
+
+          // Setup currency selector
+          const currencySelect = document.getElementById('currency-select');
+          if (currencySelect) {
+              // Try to set initial value based on detected location
+              fetch('https://ipapi.co/json/')
+                  .then(response => response.json())
+                  .then(locationData => {
+                      const currency = locationData.currency || 'USD';
+                      // Set dropdown to match detected currency if available
+                      if (currency && currencySelect.querySelector(`option[value="${currency}"]`)) {
+                          currencySelect.value = currency;
+                      }
+                  })
+                  .catch(error => console.error('Error detecting currency:', error));
+
+              // Handle manual currency selection
+              currencySelect.addEventListener('change', function() {
+                  const selectedCurrency = this.value;
+
+                  const plans = [
+                      {id: 'basic', basePrice: 9.99},
+                      {id: 'professional', basePrice: 19.99},
+                      {id: 'premium', basePrice: 39.99}
+                  ];
+
+                  plans.forEach(async plan => {
+                      const convertedPrice = await convertCurrency(plan.basePrice, 'USD', selectedCurrency);
+                      const priceElement = document.getElementById(`${plan.id}-price`);
+                      if (priceElement) {
+                          priceElement.textContent = `${convertedPrice} ${selectedCurrency}/month`;
+
+                          // Update hidden currency input
+                          const formElement = document.querySelector(`form input[name="plan"][value="${plan.id}"]`).closest('form');
+                          if (formElement) {
+                              const hiddenCurrencyInput = formElement.querySelector('input[name="display_currency"]');
+                              if (hiddenCurrencyInput) {
+                                  hiddenCurrencyInput.value = selectedCurrency;
+                              }
+                          }
+                      }
+                  });
+              });
+          }
+      });
+  </script>
+  {% include 'footer.html' %}
+</body>
+</html>
