@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chat - WordPress Automation Tool</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='chat.css') }}" rel="stylesheet">
+</head>
+<body>
+    {% include 'bubble_background.html' %}
+    {% include 'header.html' %}
+
+    <div class="container-fluid mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="pricing-card chat-container" style="background: rgba(255, 212, 239, 0.2);">
+                    <h2 class="text-center mb-4">AI Assistant</h2>
+
+                    {% if current_user.is_authenticated %}
+                    <div class="text-end mb-3">
+                        <a href="{{ url_for('chat_history') }}" class="btn btn-outline-light">
+                            <i class="fas fa-history"></i> View Chat History
+                        </a>
+                    </div>
+                    {% endif %}
+
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message system">
+                            Hello!👋 I'm your AI assistant. How can I help you?
+                        </div>
+                    </div>
+
+                    <form class="chat-input-form" id="chatForm">
+                        <div class="input-group">
+                            <input type="text" id="messageInput" placeholder="Type a message..." />
+                            <button type="submit" class="square-button" id="sendButton">Send</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+    {% include 'footer.html' %}
+</body>
+</html>
