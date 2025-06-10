@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Menu - WordPress Automation Tool</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    {% include 'bubble_background.html' %}
+    {% include 'header.html' %}
+    <script src="{{ url_for('static', filename='js/progress.js') }}"></script>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="stage-container">
+                <div class="pricing-card" style="background: rgba(255, 212, 239, 0.1);">
+                    <h2 class="text-center mb-4">Stage 5: Generate Website Menu</h2>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                        <div class="progress-text">Stage 5/10</div>
+                    </div>
+                    <p class="text-center mb-4">AI-Generated Menu for {{ category.name }} Website</p>
+                    
+                    {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            <div class="alert alert-info">
+                                {% for message in messages %}
+                                    {{ message }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    {% endwith %}
+                    
+                    {% if menu_items %}
+                        <div class="generated-menu mb-4">
+                            <h4 class="text-center mb-3">Generated Menu Structure</h4>
+                            <div class="list-group">
+                                {% for item in menu_items %}
+                                <div class="list-group-item" style="background-color: rgba(255, 212, 239, 0.3); border: 1px solid #f3aad2; color: #333;">
+
+                                        <h5 class="mb-1">{{ item.label }}</h5>
+                                        <p class="mb-1">{{ item.description }}</p>
+                                        <small>Slug: {{ item.slug }}</small>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                    
+                    <form method="POST" action="{{ url_for('generate_menu') }}">
+                        <div class="text-center">
+                            <p>Click "Generate Menu" to create a professional menu structure for your {{ category.name }} website.</p>
+                            <div class="d-flex justify-content-center gap-3 mt-3 mb-4">
+                                <button type="submit" class="btn btn-primary">Generate Menu</button>
+                                <a href="{{ url_for('generate_content') }}" class="btn btn-success">Progress to Next Stage</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    {% include 'footer.html' %}
+</body>
+</html>
