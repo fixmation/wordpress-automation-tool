@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Use</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+    <style>
+        .modal-body {
+            color: white !important;
+        }
+        .modal-body h2,
+        .modal-body h3,
+        .modal-body p,
+        .modal-body ul,
+        .modal-body li {
+            color: white !important;
+            text-shadow: none !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Terms of Use Modal (Automatically Triggered) -->
+    <div class="modal fade show" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="false" style="display: block; background: rgba(0, 0, 0, 0.5);">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="termsModalLabel">Terms of Use</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="goBack()"></button>
+                </div>
+                <div class="modal-body">
+                    <h2>Terms of Use</h2>
+                    <p>Welcome to WordPress Automation Tool. By using our service, you agree to these terms.</p>
+                    
+                    <h3>1. Service Description</h3>
+                    <p>WordPress Automation Tool provides automated website creation and management services.</p>
+                    
+                    <h3>2. User Responsibilities</h3>
+                    <p>Users are responsible for maintaining the confidentiality of their account and password.</p>
+                    
+                    <h3>3. Intellectual Property</h3>
+                    <p>All content generated is for user's personal or business use.</p>
+                    
+                    <h3>4. Limitation of Liability</h3>
+                    <p>We are not liable for any direct or indirect damages arising from service use.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="goBack()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            {% if show_modal %}
+                var myModal = new bootstrap.Modal(document.getElementById('termsModal'));
+                myModal.show();
+            {% endif %}
+        });
+        
+        function goBack() {
+            window.location.href = "{{ url_for('home') }}";
+        }
+    </script>
+</body>
+</html>
