@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WordPress Installation - WordPress Automation Tool</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+</head>
+<body>
+    {% include 'bubble_background.html' %}
+    {% include 'header.html' %}
+    <script src="{{ url_for('static', filename='js/progress.js') }}"></script>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="stage-container">
+                <div class="pricing-card" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);">
+                    <h2 class="text-center mb-4">Stage 2: WordPress Installation</h2>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                        <div class="progress-text">Stage 2/10</div>
+                    </div>
+                    <form method="POST" action="{{ url_for('wordpress_installation', id=wp_install.id if wp_install else None) }}">
+                        {% with messages = get_flashed_messages() %}
+                            {% if messages %}
+                                <div class="alert alert-danger">
+                                    {% for message in messages %}
+                                        {{ message }}
+                                    {% endfor %}
+                                </div>
+            {% endif %}
+                        {% endwith %}
+                        <div class="mb-3">
+                            <label for="site_url" class="form-label">Site URL</label>
+                            <input type="text" class="form-control" id="site_url" name="site_url" value="{{ wp_install.site_url if wp_install else '' }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="admin_username" class="form-label">Admin Username</label>
+                            <input type="text" class="form-control" id="admin_username" name="admin_username" value="{{ wp_install.admin_username if wp_install else '' }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="admin_password" class="form-label">Admin Password</label>
+                            <input type="password" class="form-control" id="admin_password" name="admin_password" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="admin_email" class="form-label">Admin Email</label>
+                            <input type="email" class="form-control" id="admin_email" name="admin_email" value="{{ wp_install.admin_email if wp_install else '' }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="site_title" class="form-label">Site Title</label>
+                            <input type="text" class="form-control" id="site_title" name="site_title" value="{{ wp_install.site_title if wp_install else '' }}" required>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center" style="gap: 15px;">
+                            <a href="{{ url_for('connect_server') }}" class="btn btn-secondary" style="height: 46px; display: inline-flex; align-items: center; justify-content: center; min-width: 120px; margin: 0;">Start Over</a>
+                            <button type="submit" class="btn btn-primary" style="height: 46px; display: inline-flex; align-items: center; justify-content: center; min-width: 200px; margin: 0;">
+                                <span class="d-none d-md-inline">{{ 'Update WordPress Installation' if wp_install else 'Install WordPress' }}</span>
+                                <span class="d-md-none" style="font-size: 12px;">{{ 'Update WP' if wp_install else 'Install WP' }}</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    {% include 'footer.html' %}
+</body>
+</html>
