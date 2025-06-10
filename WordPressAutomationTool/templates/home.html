@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WordPress Automation Tool - Simplify Your Website Creation</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    {% include 'bubble_background.html' %}
+    {% include 'header.html' %}
+
+    <div class="container text-center mt-5">
+        <div class="animated-headline">
+            <h1 class="text-white heading-animated">Create Your WordPress Website in Minutes</h1>
+            <div class="subtitle-container">
+                <p class="text-white subtitle-animated">
+                    <span class="animated-word">Automate your website setup</span>   
+                    <span class="animated-word">with our AI-powered tool.</span>
+                    <span class="animated-word">Select, customize, and deploy instantly.</span>                    
+                </p>
+            </div>
+        </div>
+        <a href="{{ url_for('signup') }}" class="btn btn-primary btn-lg pulse-button">Start Free Trial</a>
+        <p class="text-white mt-3">Already have an account? <a href="{{ url_for('login') }}" class="text-white text-decoration-underline">Login</a></p>
+    </div>
+
+    <section class="container mt-5">
+        <div class="row text-center">
+            <div class="col-md-4">
+                <div style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); padding: 20px; border-radius: 10px; margin-bottom: 15px;">
+                    <i class="fas fa-magic fa-3x text-primary"></i>
+                    <h4>AI-Powered Creation</h4>
+                    <p>Our intelligent AI system analyzes your website requirements & transforms them into a complete, personalized design. By leveraging advanced machine learning algorithms, we generate tailored content, layouts, & visual elements that precisely match your business needs.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); padding: 20px; border-radius: 10px; margin-bottom: 15px;">
+                    <i class="fas fa-palette fa-3x text-primary"></i>
+                    <h4>Custom Themes</h4>
+                    <p>Browse our curated collection of professional themes tailored to your specific industry requirements. Each theme offers comprehensive customization options, featuring modern layouts, responsive design, & built-in features that effectively showcase your unique brand identity.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); padding: 20px; border-radius: 10px; margin-bottom: 15px;">
+                    <i class="fas fa-rocket fa-3x text-primary"></i>
+                    <h4>Quick Deployment</h4>
+                    <p>Transform your website concept into a live platform through our streamlined, one-click deployment process. Our cutting-edge automation technology eliminates complex technical barriers, reducing website launch time from weeks to just a few minutes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container mt-5">
+        <h2 class="text-center">Pricing Plans</h2>
+        <div class="row justify-content-center pricing-cards-container">
+            <!-- Free Trial Plan -->
+            <div class="col-md-4 pricing-order-free-trial">
+                <div class="card text-center" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); margin-bottom: 15px;">
+                    <div class="card-header" style="background: rgba(255, 255, 255, 0.1); border-bottom: 1px solid rgba(255, 255, 255, 0.2); color: #ff6600; font-weight: bold; font-size: 1.2rem;">Free Trial</div>
+                    <div class="card-body" style="color: #ffffff;">
+                        <h3 style="color: #ffffff; font-weight: bold; font-size: 1.5rem;">$0/month</h3>
+                        <p style="color: #ffffff; font-size: 1.1rem;">Limited features for startup</p>
+                        <ul class="list-unstyled" style="color: #ffcbe5;">
+                            <li><i class="fas fa-check me-2"></i>Single Page Content Generation</li>
+                            <li><i class="fas fa-check me-2"></i>Automatic Theme Installation</li>
+                            <li><i class="fas fa-check me-2"></i>Basic Image Description</li>
+                            <li><i class="fas fa-check me-2"></i>Limited Media Library</li>
+                            <li><i class="fas fa-check me-2"></i>Single Image Upload</li>
+                        </ul>
+                        <a href="#" class="btn btn-primary" style="background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.3);">Get Started</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Basic Plan -->
+            <div class="col-md-4 pricing-order-basic">
+                <div class="card text-center" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); margin-bottom: 15px;">
+                    <div class="card-header" style="background: rgba(255, 255, 255, 0.1); border-bottom: 1px solid rgba(255, 255, 255, 0.2); color: #ff6600; font-weight: bold; font-size: 1.2rem;">Basic</div>
+                    <div class="card-body" style="color: #ffffff;">
+                        <h3 style="color: #ffffff; font-weight: bold; font-size: 1.5rem;">$9.99/month</h3>
+                        <p style="color: #ffffff; font-size: 1.1rem;">Essential tools for beginners</p>
+                        <ul class="list-unstyled" style="color: #ffcbe5;">
+                            <li><i class="fas fa-check me-2"></i>Single Image Upload</li>
+                            <li><i class="fas fa-check me-2"></i>Basic SEO Setup</li>
+                            <li><i class="fas fa-check me-2"></i>Homepage Content</li>
+                            <li><i class="fas fa-check me-2"></i>About Us Page</li>
+                            <li><i class="fas fa-check me-2"></i>Contact Page</li>
+                        </ul>
+                        <a href="#" class="btn btn-primary" style="background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.3);">Get Started</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pro Plan -->
+            <div class="col-md-4 pricing-order-pro">
+                <div class="card text-center" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); margin-bottom: 15px;">
+                    <div class="card-header" style="background: rgba(255, 255, 255, 0.1); border-bottom: 1px solid rgba(255, 255, 255, 0.2); color: #ff6600; font-weight: bold; font-size: 1.2rem;">Pro</div>
+                    <div class="card-body" style="color: #ffffff;">
+                        <h3 style="color: #ffffff; font-weight: bold; font-size: 1.5rem;">$19.99/month</h3>
+                        <p style="color: #ffffff; font-size: 1.1rem;">Advanced features for professionals</p>
+                        <ul class="list-unstyled" style="color: #ffcbe5;">
+                            <li><i class="fas fa-check me-2"></i>All Basic Plan Features</li>
+                            <li><i class="fas fa-check me-2"></i>Services/Products Pages</li>
+                            <li><i class="fas fa-check me-2"></i>Blog Posts (5)</li>
+                            <li><i class="fas fa-check me-2"></i>Multiple Image Upload</li>
+                            <li><i class="fas fa-check me-2"></i>FAQ Page</li>
+                        </ul>
+                        <a href="#" class="btn btn-primary" style="background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.3);">Get Started</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Premium Plan -->
+            <div class="col-md-4 pricing-order-premium">
+                <div class="card text-center" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); margin-bottom: 15px; max-width: 100%;">
+                    <div class="card-header" style="background: rgba(255, 255, 255, 0.1); border-bottom: 1px solid rgba(255, 255, 255, 0.2); color: #ff6600; font-weight: bold; font-size: 1.2rem;">Premium</div>
+                    <div class="card-body" style="color: #ffffff;">
+                        <h3 style="color: #ffffff; font-weight: bold; font-size: 1.5rem;">$39.99/month</h3>
+                        <p style="color: #ffffff; font-size: 1.1rem;">Complete automation for businesses</p>
+                        <ul class="list-unstyled" style="color: #ffcbe5;">
+                            <li><i class="fas fa-check me-2"></i>All Professional Plan Features</li>
+                            <li><i class="fas fa-check me-2"></i>Blog Posts (15)</li>
+                            <li><i class="fas fa-check me-2"></i>Custom Landing Pages (3)</li>
+                            <li><i class="fas fa-check me-2"></i>SEO Optimization</li>
+                            <li><i class="fas fa-check me-2"></i>Social Media Content</li>
+                        </ul>
+                        <a href="#" class="btn btn-primary" style="background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.3);">Get Started</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enterprise Plan -->
+            <div class="col-md-4 pricing-order-enterprise">
+                <div class="card text-center" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); margin-bottom: 15px; max-width: 100%;">
+                    <div class="card-header" style="background: rgba(255, 255, 255, 0.1); border-bottom: 1px solid rgba(255, 255, 255, 0.2); color: #ff6600; font-weight: bold; font-size: 1.2rem;">Enterprise</div>
+                    <div class="card-body" style="color: #ffffff;">
+                        <h3 style="color: #ffffff; font-weight: bold; font-size: 1.5rem;">$69.99/month</h3>
+                        <p style="color: #ffffff; font-size: 1.1rem;">Solution for Large Organizations</p>
+                        <ul class="list-unstyled" style="color: #ffcbe5;">
+                            <li><i class="fas fa-check me-2"></i>All Premium Plan Features</li>
+                            <li><i class="fas fa-check me-2"></i>Unlimited Blog Posts</li>
+                            <li><i class="fas fa-check me-2"></i>Unlimited Custom Landing Pages</li>
+                            <li><i class="fas fa-check me-2"></i>Advanced SEO Strategy</li>
+                            <li><i class="fas fa-check me-2"></i>Dedicated Account Manager</li>
+                        </ul>
+                        <a href="#" class="btn btn-primary" style="background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(196, 6, 6, 0.932);">Coming Soon!</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<!-- AI Assistant Floating Button -->
+<button onclick="openChatModal()" class="ai-chat-fab" aria-label="AI Assistant Chat">
+    <i class="fas fa-robot"></i>
+    <span class="chat-tooltip">AI Assistant</span>
+</button>
+
+<!-- Chat Modal -->
+<div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background: rgba(71, 1, 44, 0.4); border: 1px solid rgba(255, 192, 203, 0.3); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);">
+            <div class="modal-header" style="border-bottom: 1px solid rgba(255, 192, 203, 0.3);">
+                <h5 class="modal-title text-white" id="chatModalLabel">AI Assistant</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body chat-container" style="color: white;">
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message system" style="color: white;">
+                        Hello!👋 I'm your AI assistant. How can I help you today?
+                    </div>
+                    {% if current_user.is_authenticated %}
+                        <div class="message system" style="color: white;">
+                            You're logged in! Your conversation will be saved for future reference.
+                        </div>
+                    {% else %}
+                        <div class="message system" style="color: white;">
+                            <i class="fas fa-info-circle me-2"></i> Please <a href="{{ url_for('login') }}" class="chat-link">log in</a> to save your conversation history.
+                        </div>
+                    {% endif %}
+                </div>
+                <form class="chat-input-form" id="chatForm">
+                    <div class="input-group">
+                        <input type="text" id="messageInput" placeholder="Type a message..." class="form-control text-white" style="background: rgba(255, 255, 255, 0.1); color: #ffffff;" />
+                        <button type="submit" class="square-button" id="sendButton">Send</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Translation logic
+    document.addEventListener('DOMContentLoaded', async () => {
+        const allElements = document.querySelectorAll('[data-translatable]');
+        const languageItems = document.querySelectorAll('[data-lang]');
+        
+        // Store original text content on load
+        allElements.forEach(element => {
+            if (!element.getAttribute('data-original')) {
+                element.setAttribute('data-original', element.textContent.trim());
+            }
+        });
+
+        // Function to translate text
+        async function translateText(text, targetLang) {
+            try {
+                const response = await fetch('/translate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text, target: targetLang })
+                });
+                const data = await response.json();
+                return data.translatedText || text;
+            } catch (error) {
+                console.error('Translation error:', error);
+                return text;
+            }
+        }
+
+        // Function to translate all elements
+        async function translatePage(lang) {
+            for (const element of allElements) {
+                const originalText = element.getAttribute('data-original') || element.textContent.trim();
+                const translatedText = await translateText(originalText, lang);
+                element.textContent = translatedText;
+            }
+        }
+
+        // Event listener for language selection
+        languageItems.forEach(item => {
+            item.addEventListener('click', async (e) => {
+                e.preventDefault();
+                const lang = item.getAttribute('data-lang');
+                localStorage.setItem('preferred_language', lang);
+                await translatePage(lang);
+            });
+        });
+
+        // Initialize with saved language
+        const savedLang = localStorage.getItem('preferred_language');
+        if (savedLang) {
+            await translatePage(savedLang);
+        }
+    });
+
+    // Chat modal function
+    function openChatModal() {
+        const chatModal = new bootstrap.Modal(document.getElementById('chatModal'));
+        chatModal.show();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const chatForm = document.getElementById('chatForm');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+        const chatMessages = document.getElementById('chatMessages');
+
+        chatForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const message = messageInput.value.trim();
+            if (!message) return;
+
+            sendButton.disabled = true;
+            sendButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
+
+            addMessage(message, 'user');
+            messageInput.value = '';
+
+            try {
+                const response = await fetch('/chat/send', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message })
+                });
+
+                const data = await response.json();
+                addMessage(data.response || 'No reply', 'ai');
+
+            } catch (error) {
+                console.error('Error:', error);
+                addMessage('Sorry, there was an error processing your request.', 'system');
+            } finally {
+                sendButton.disabled = false;
+                sendButton.innerHTML = 'Send';
+            }
+        });
+
+        function addMessage(text, type) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            messageDiv.innerHTML = text;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+    });
+</script>
+    {% include 'footer.html' %}
+</body>
+</html>
