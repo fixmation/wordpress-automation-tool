@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+    <style>
+        .modal-body {
+            color: white; /* White text color */
+            h2, h3, p, ul, li { color: white !important; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Documentation Modal (Automatically Triggered) -->
+    <div class="modal fade show" id="documentationModal" tabindex="-1" aria-labelledby="documentationModalLabel" aria-hidden="false" style="display: block; background: rgba(0, 0, 0, 0.5);">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="documentationModalLabel">Documentation</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="goBack()"></button>
+                </div>
+                <div class="modal-body">
+                    <h2>User Guide</h2>
+                    
+                    <h3>Getting Started</h3>
+                    <ol>
+                        <li>Create an account or log in</li>
+                        <li>Review SaaS Terms of Use Agreement in Dashboard</li>
+                        <li>Connect your hosting server</li>
+                        <li>Choose website category</li>
+                        <li>Select a theme</li>
+                        <li>Generate Top Menu</li>
+                        <li>Generate content</li>
+                        <li>SEO and Performance Optimization</li>
+                        <li>Launch your website</li>
+                    </ol>
+                    
+                    <h3>Server Requirements</h3>
+                    <ul>
+                        <li>cPanel access</li>
+                        <li>PHP 7.4 or higher</li>
+                        <li>MySQL 5.6 or higher</li>
+                        <li>Apache or Nginx web server</li>
+                    </ul>
+                    
+                    <h3>Features</h3>
+                    <ul>
+                        <li>Automated WordPress installation</li>
+                        <li>Theme customization</li>
+                        <li>Content generation</li>
+                        <li>Image generation Description</li>
+                        <li>SEO optimization</li>
+                        <li>Performance optimization</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="goBack()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var myModal = new bootstrap.Modal(document.getElementById('documentationModal'));
+            myModal.show();
+        });
+        
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</body>
+</html>
