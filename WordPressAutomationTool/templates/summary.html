@@ -1,0 +1,119 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Summary - WordPress Automation Tool</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    {% include 'bubble_background.html' %}
+    {% include 'header.html' %}
+    <script src="{{ url_for('static', filename='js/progress.js') }}"></script>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="stage-container">
+                <div class="pricing-card" style="background: rgba(255, 212, 239, 0.1);">
+                    <h2 class="text-center mb-4">Stage 10: Summary & Completion</h2>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                        <div class="progress-text">Stage 10/10</div>
+                    </div>
+                    
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                    
+                    <div class="alert alert-success">
+                        <i class="fas fa-check-circle me-2"></i> Congratulations! Your WordPress website has been successfully set up and optimized.
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5><i class="fas fa-server me-2"></i>Website Information</h5>
+                        </div>
+                        <div class="card-body">
+                            {% if wp_install %}
+                            <p><strong>Site URL:</strong> {{ wp_install.site_url }}</p>
+                            <p><strong>Site Title:</strong> {{ wp_install.site_title }}</p>
+                            <p><strong>Admin Username:</strong> {{ wp_install.admin_username }}</p>
+                            <p><strong>Admin Email:</strong> {{ wp_install.admin_email }}</p>
+                            {% else %}
+                            <p>No WordPress installation found. Please start from <a href="{{ url_for('connect_server') }}">connecting your server</a>.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5><i class="fas fa-th-large me-2"></i>Website Category & Theme</h5>
+                        </div>
+                        <div class="card-body">
+                            {% if category %}
+                            <p><strong>Category:</strong> {{ category.name }}</p>
+                            <p><strong>Description:</strong> {{ category.description }}</p>
+                            {% else %}
+                            <p>No category selected. <a href="{{ url_for('website_category') }}">Select a category</a>.</p>
+                            {% endif %}
+                            
+                            {% if theme %}
+                            <p><strong>Theme:</strong> {{ theme.name }}</p>
+                            <p><strong>Description:</strong> {{ theme.description }}</p>
+                            {% else %}
+                            <p>No theme selected. <a href="{{ url_for('select_theme') }}">Select a theme</a>.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5><i class="fas fa-sliders-h me-2"></i>Optimization Settings</h5>
+                        </div>
+                        <div class="card-body">
+                            {% if optimization_settings %}
+                            <h6>Google Analytics</h6>
+                            <p><strong>Tracking ID:</strong> {{ optimization_settings.ga_tracking_id or 'Not configured' }}</p>
+                            <p><strong>Enhanced eCommerce:</strong> {{ 'Enabled' if optimization_settings.ga_enhanced_ecommerce else 'Disabled' }}</p>
+                            <p><strong>Demographics:</strong> {{ 'Enabled' if optimization_settings.ga_demographics else 'Disabled' }}</p>
+                            
+                            <h6>Google Ads</h6>
+                            <p><strong>Conversion ID:</strong> {{ optimization_settings.ads_conversion_id or 'Not configured' }}</p>
+                            <p><strong>Remarketing Tag:</strong> {{ optimization_settings.ads_remarketing_tag or 'Not configured' }}</p>
+                            <p><strong>Dynamic Remarketing:</strong> {{ 'Enabled' if optimization_settings.ads_dynamic_remarketing else 'Disabled' }}</p>
+                            
+                            <h6>Performance</h6>
+                            <p><strong>Page Caching:</strong> {{ 'Enabled' if optimization_settings.enable_page_caching else 'Disabled' }}</p>
+                            <p><strong>Browser Caching:</strong> {{ 'Enabled' if optimization_settings.enable_browser_caching else 'Disabled' }}</p>
+                            <p><strong>Object Caching:</strong> {{ 'Enabled' if optimization_settings.enable_object_caching else 'Disabled' }}</p>
+                            <p><strong>Image Optimization:</strong> {{ 'Enabled' if optimization_settings.enable_image_optimization else 'Disabled' }}</p>
+                            <p><strong>Lazy Loading:</strong> {{ 'Enabled' if optimization_settings.enable_lazy_loading else 'Disabled' }}</p>
+                            <p><strong>Minification:</strong> {{ 'Enabled' if optimization_settings.enable_minification else 'Disabled' }}</p>
+                            <p><strong>CDN Provider:</strong> {{ optimization_settings.cdn_provider or 'Not configured' }}</p>
+                            <p><strong>CDN URL:</strong> {{ optimization_settings.cdn_url or 'Not configured' }}</p>
+                            {% else %}
+                            <p>No optimization settings found. <a href="{{ url_for('optimization') }}">Configure optimization</a>.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-4">
+                        <a href="{{ url_for('optimization') }}" class="btn btn-secondary me-2">Back to Optimization</a>
+                        <a href="{{ url_for('user_dashboard') }}" class="btn btn-primary">Go to Dashboard</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    {% include 'footer.html' %}
+</body>
+</html>
