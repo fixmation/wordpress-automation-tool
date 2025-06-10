@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+    <style>
+        .modal-body {
+            color: white; /* White text color */
+        }
+    </style>
+</head>
+<body>
+    <!-- FAQ Modal (Automatically Triggered) -->
+    <div class="modal fade show" id="faqModal" tabindex="-1" aria-labelledby="faqModalLabel" aria-hidden="false" style="display: block; background: rgba(0, 0, 0, 0.5);">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="faqModalLabel">Frequently Asked Questions</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="goBack()"></button>
+                </div>
+                <div class="modal-body">
+                    <h2 style="color: white;">Frequently Asked Questions</h2>
+                    
+                    <h3 style="color: white;">General Questions</h3>
+                    <div class="faq-item">
+                        <h4 style="color: white;">What is WordPress Automation Tool?</h4>
+                        <p style="color: white;">WordPress Automation Tool is a platform that helps you automatically set up and configure WordPress websites with customized themes and content.</p>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h4 style="color: white;">How does it work?</h4>
+                        <p style="color: white;">Our tool connects to your hosting account, installs WordPress, configures themes, and generates content based on your preferences.</p>
+                    </div>
+                    
+                    <h3 style="color: white;">Technical Questions</h3>
+                    <div class="faq-item">
+                        <h4 style="color: white;">What hosting providers are supported?</h4>
+                        <p style="color: white;">We support most major hosting providers that offer cPanel access.</p>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h4 style="color: white;">Is my data secure?</h4>
+                        <p style="color: white;">Yes, we use industry-standard encryption and security measures to protect your data.</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="goBack()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var myModal = new bootstrap.Modal(document.getElementById('faqModal'));
+            myModal.show();
+        });
+        
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</body>
+</html>
