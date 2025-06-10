@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose Website Category - WordPress Automation Tool</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        .category-card {
+            transition: transform 0.2s;
+            margin-bottom: 15px;
+        }
+        .category-card:hover {
+            transform: translateY(-5px);
+        }
+        .category-card .btn-check:checked + .btn-outline-primary {
+            background-color: #0d6efd !important;
+            color: white !important;
+        }
+        .category-card .btn-outline-primary:hover {
+            background-color: #590000 !important;
+            color: white !important;
+        }
+        .category-icon {
+            font-size: 1.5rem;
+            margin-right: 10px;
+        }
+        .stage-container {
+            display: flex; /* Added to enable flexbox layout */
+            flex-direction: column; /* Maintain vertical stacking of elements */
+            align-items: center; /* Center horizontally */
+        }
+        .category-container {
+          display: flex; /* Added for horizontal alignment of buttons */
+          flex-wrap: wrap; /* Allow wrapping if buttons exceed container width */
+          justify-content: center; /* Center the buttons horizontally */
+        }
+        .category-container > div {
+          margin: 10px; /* Add some spacing between category cards */
+        }
+        .btn-group {
+            display: flex;
+            justify-content: center;
+        }
+        .btn-group .btn {
+            margin: 0 5px;
+        }
+
+    </style>
+</head>
+<body>
+    {% include 'bubble_background.html' %}
+    {% include 'header.html' %}
+    <script src="{{ url_for('static', filename='js/progress.js') }}"></script>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="stage-container">
+                <div class="pricing-card" style="background: rgba(255, 212, 239, 0.1);">
+                    <h2 class="text-center mb-4">Stage 3: Choose Your Website Category</h2>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 30%" aria-valuenow="30.0" aria-valuemin="0" aria-valuemax="100"></div>
+                        <div class="progress-text">Stage 3/10</div>
+                    </div>
+                    <p class="text-center mb-4">Select the category that best matches your website's purpose</p>
+
+                    <form method="POST" action="{{ url_for('website_category') }}">
+                        {% with messages = get_flashed_messages() %}
+                            {% if messages %}
+                                <div class="alert alert-danger">
+                                    {% for message in messages %}
+                                        {{ message }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        {% endwith %}
+
+                        <div class="category-container">
+                            {% if categories and categories|length > 0 %}
+                                {% for category in categories %}
+                                <div class="category-card">
+                                    <div style="background-color: maroon; border: 2px solid #f3aad2; border-radius: 15px;">
+                                        <input type="radio" class="btn-check" name="category" id="{{ category.id }}" value="{{ category.id }}" required>
+                                        <label class="btn btn-outline-primary w-100 h-100 text-start p-4" for="{{ category.id }}" style="color: #FFD1DC; background-color: transparent; border: none;">
+                                            <h4 style="color: #FFD1DC;">
+                                                <span class="category-icon">
+                                                {% if category.name == 'eCommerce' %}
+                                                    <i class="fas fa-shopping-cart"></i>
+                                                {% elif category.name == 'Restaurant' %}
+                                                    <i class="fas fa-utensils"></i>
+                                                {% elif category.name == 'Blog' %}
+                                                    <i class="fas fa-blog"></i>
+                                                {% elif category.name == 'Portfolio' %}
+                                                    <i class="fas fa-briefcase"></i>
+                                                {% elif category.name == 'Business' %}
+                                                    <i class="fas fa-building"></i>
+                                                {% elif category.name == 'News' %}
+                                                    <i class="fas fa-newspaper"></i>
+                                                {% elif category.name == 'Social Network' %}
+                                                    <i class="fas fa-users"></i>
+                                                {% elif category.name == 'Educational' %}
+                                                    <i class="fas fa-graduation-cap"></i>
+                                                {% elif category.name == 'Real Estate' %}
+                                                    <i class="fas fa-home"></i>
+                                                {% elif category.name == 'Nonprofit' %}
+                                                    <i class="fas fa-heart"></i>
+                                                {% endif %}
+                                                </span>
+                                                {{ category.name }}
+                                            </h4>
+                                            <p class="mb-0" style="color: #FFD1DC;">{{ category.description }}</p>
+                                        </label>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            {% else %}
+                                <div class="col-md-12">
+                                    <div class="alert alert-info">
+                                        No website categories found. Please contact support.
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="d-flex justify-content-center gap-3 mt-3 mb-4">
+                            <button type="submit" class="btn btn-primary">Continue</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    {% include 'footer.html' %}
+</body>
+</html>
