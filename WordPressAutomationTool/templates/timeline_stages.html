@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>10 - Stage Workflow Guide</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+    <style>
+        body {
+            background-color: #fcdfec;
+            font-family: Arial, sans-serif;
+        }
+
+        .timeline-container {
+            max-width: 450px;
+            margin: 20px auto;
+            position: relative;
+        }
+
+        .timeline-line {
+            position: absolute;
+            width: 6px;
+            background-color: #fdaae7;
+            top: 0;
+            bottom: 0;
+            right: 55%;
+            /* Center horizontally */
+            transform: translateX(-1%);
+            /* Fine-tune centering *
+        }
+
+        .timeline-items {
+            position: relative;
+            padding: 5px 0;
+            /* Added padding top and bottom */
+            list-style: none;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 50px;
+            /* Increased space between items */
+            width: 90%;
+            clear: both;
+        }
+
+        .timeline-content {
+            margin-left: -12px;
+            /* For right-side items */
+            margin-right: -8px;
+            /* For left-side items */
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+            /* Remove margin from last item */
+        }
+
+        .timeline-content {
+            width: 46%;
+            padding: 7px;
+            /* Increased internal padding */
+            background: rgb(69, 2, 39);
+            border-radius: 8px;
+            box-shadow: 1px 5px 8px rgba(254, 220, 220, 0.4);
+            position: relative;
+            margin-top: 8px;
+            /* Space between dot and content */
+            margin-bottom: 11px;
+            /* Space between content and next dot */
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            float: left;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content {
+            float: right;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background-color: #fdaae7;
+            border-radius: 60%;
+            top: 50%;
+            /* Align vertically with content */
+            left: 49.8%;
+            /* Align horizontally with the line */
+            transform: translate(-60%, -60%);
+            /* Center perfectly */
+            z-index: -1;
+            /* Ensure dots appear above the line */
+        }
+
+        .timeline-title {
+            font-size: 1.12rem;
+            font-weight: bold;
+            color: #fdaae7;
+            margin-bottom: 8px;
+        }
+
+        .page-title {
+            text-align: center;
+            color: #f5efef;
+            margin-bottom: 30px;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        @media (max-width: 568px) {
+            .timeline-line {
+                left: 26px;
+            }
+
+            .timeline-content {
+                width: calc(100% - 50px);
+                float: right !important;
+                margin-left: 5px;
+                margin-top: 20px;
+                /* Adjusted for mobile */
+                margin-bottom: 15px;
+                /* Adjusted for mobile */
+            }
+
+            .timeline-dot {
+                left: 20px;
+                top: 0px;
+                /* Adjusted dot position for mobile */
+                transform: translateY(0);
+            }
+
+            .timeline-item {
+                margin-bottom: 2px;
+                /* Reduced space for mobile */
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h4 class="page-title">10 - Stage Timeline Guide</h4> <!-- Added title element -->
+    <div class="timeline-container">
+        <div class="timeline-line"></div>
+
+        <div class="timeline-items">
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Stage 1</div>
+                    <p>Getting Started - Connect with server using cPanel login credentials. You may need cPanel or Softaculous API keys as optional requirements for automatic WP installation.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Stage 2</div>
+                    <p>Setting Up Your WP - Create Wordpress database Credentials and Configurations using your own UN & PW.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Stage 3</div>
+                    <p>Category Selection - Once installed the Wordpress software, select your desired website category.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Stage 4</div>
+                    <p>Theme Selection - Choosing your preferred theme template and associated plugins to be installed.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Stage 5</div>
+                    <p>Menu & Content Generation - AI will provide you a list of menu to Auto-populate according to your website category or you may Continue to Content Generation stage.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Stage 6</div>
+                    <p>Premium Plans - Multiple Menu & Contents Generation are possible by monthly subsciption models. Payment made by Secured Stripe Gateway.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Stage 7</div>
+                    <p>AI Menu Generation - Automatic Top Menu creation according to your website category selection.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Stage 8</div>
+                    <p>AI Content Generation - Automatic multiple contents creation according to your website category & Subsciption selection.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Stage 9</div>
+                    <p>Performance Tuning - Application of SEO optimizations, Google Analytics and other speedup processes.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Stage 10</div>
+                    <p>Launch & Maintenance - Going live and managing updates.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="text-center mt-4">
+        <a href="{{ url_for('wordpress_automation_demo') }}" class="btn btn-secondary" style="margin-bottom: 20px;">Close</a>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
