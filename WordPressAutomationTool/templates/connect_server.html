@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect Server - WordPress Automation Tool</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+    <style>
+        .stage-container {
+            display: flex; /* Enable flexbox for horizontal alignment */
+            flex-direction: column; /* Keep stages vertically stacked */
+            align-items: center; /* Center horizontally */
+        }
+        .stage-buttons {
+            display: flex; /* Horizontally align buttons within each stage */
+            justify-content: center; /* Center buttons */
+            gap: 1rem; /* Add spacing between buttons */
+            width: 100%; /* Ensure buttons stretch across the container */
+            box-sizing: border-box; /* Include padding and border in width calculation */
+        }
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+    {% include 'bubble_background.html' %}
+    <script src="{{ url_for('static', filename='js/progress.js') }}"></script>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="stage-container">
+                <div class="pricing-card" style="background: rgba(255, 212, 239, 0.1);">                    
+                    <h2 class="text-center mb-4">Stage 1: Connect Your Server</h2>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 10%" aria-valuenow="10.0" aria-valuemin="0" aria-valuemax="100"></div>
+                        <div class="progress-text">Stage 1/10</div>
+                    </div>
+                    <form method="POST" action="{{ url_for('connect_server') }}">
+                        {% with messages = get_flashed_messages() %}
+                            {% if messages %}
+                                <div class="alert alert-danger">
+                                    {% for message in messages %}
+                                        {{ message }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        {% endwith %}
+                        <div class="mb-3">
+                            <label for="domain" class="form-label">Domain Name</label>
+                            <input type="text" class="form-control" id="domain" name="domain" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="cpanel_username" class="form-label">cPanel Username</label>
+                            <input type="text" class="form-control" id="cpanel_username" name="cpanel_username" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="cpanel_password" class="form-label">cPanel Password</label>
+                            <input type="password" class="form-control" id="cpanel_password" name="cpanel_password" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="cpanel_api_key" class="form-label">
+                                cPanel API Key 
+                                <small class="text-muted" style="color: #ff4500 !important;">(Optional)</small>
+                            </label>
+                            <input type="text" class="form-control" id="cpanel_api_key" name="cpanel_api_key">
+                            <small class="form-text api-key-help">
+                                Find your API key in cPanel's API Token section
+                            </small>
+                            <div class="alert alert-info mt-2" role="alert">
+                                <strong>Tip:</strong> API key helps automate WordPress management. 
+                                Log into cPanel → API Tokens → Generate New Token
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="softaculous_api_key" class="form-label">
+                                Softaculous API Key 
+                                <small class="text-muted" style="color: #ff4500 !important;">(Optional)</small>
+                            </label>
+                            <input type="text" class="form-control" id="softaculous_api_key" name="softaculous_api_key">
+                            <small class="form-text api-key-help">
+                                Obtain Softaculous API key from your hosting provider
+                            </small>
+                            <div class="alert alert-info mt-2" role="alert">
+                                <strong>Tip:</strong> Contact your hosting provider to get Softaculous API access
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="ssh_details" class="form-label">
+                                SSH Access Details 
+                                <small class="text-muted" style="color: #ff4500 !important;">(Optional)</small>
+                            </label>
+                            <textarea class="form-control" id="ssh_details" name="ssh_details" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">WordPress Installation Method</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="installation_method" id="api_install" value="api" checked>
+                                <label class="form-check-label" for="api_install">
+                                    Automatic Installation (Using Softaculous API)
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="installation_method" id="manual_install" value="manual">
+                                <label class="form-check-label" for="manual_install">
+                                    Manual Installation (Redirect to cPanel Softaculous)
+                                </label>
+                            </div>
+                        </div>
+                        <div class="stage-buttons mt-4">
+                            <a href="{{ url_for('user_dashboard') }}" class="btn btn-secondary" style="height: 46px; display: inline-flex; align-items: center;">Back to Dashboard</a>
+                            <button type="submit" class="btn btn-primary" style="height: 46px;">Continue</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+   {% include 'footer.html' %}
+</body>
+</html>
