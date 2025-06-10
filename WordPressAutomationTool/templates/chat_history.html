@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat History - WordPress Automation Tool</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='chat.css') }}" rel="stylesheet">
+</head>
+
+<body>
+    {% include 'bubble_background.html' %}
+    {% include 'header.html' %}
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="pricing-card">
+                    <h2 class="text-center mb-4">Chat History</h2>
+                    <p class="text-center">Your conversation history with our AI assistant</p>
+                    
+                    <div class="d-flex justify-content-between mb-4">
+                        <a href="{{ url_for('user_dashboard') }}" class="btn btn-primary">
+                            <i class="fas fa-arrow-left"></i> Back to Dashboard
+                        </a>
+                        <a href="{{ url_for('chat') }}" class="btn btn-success">
+                            <i class="fas fa-robot"></i> New Chat
+                        </a>
+                    </div>
+                    
+                    {% if messages %}
+                        <div class="chat-history-container">
+                            {% for message in messages %}
+                                <div class="chat-history-item mb-4">
+                                    <div class="card">
+                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                            <span>
+                                                <i class="fas fa-calendar-alt me-2"></i>
+                                                {{ message.created_at.strftime('%Y-%m-%d %H:%M:%S') }}
+                                            </span>
+                                            <span class="badge bg-primary">Conversation #{{ message.id }}</span>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="message user mb-3">
+                                                <strong>You:</strong> {{ message.message }}
+                                            </div>
+                                            <div class="message ai">
+                                                <strong>AI Assistant:</strong> {{ message.response|safe }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info text-center">
+                            <i class="fas fa-info-circle me-2"></i>
+                            You don't have any chat history yet. Start a conversation with our AI assistant!
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include 'footer.html' %}
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Process links in AI responses
+        document.addEventListener('DOMContentLoaded', function() {
+            const aiMessages = document.querySelectorAll('.message.ai');
+            
+            aiMessages.forEach(message => {
+                // Process markdown links [text](url) in the message
+                const processedText = message.innerHTML.replace(/\[([^\]]+)\]\(([^)]+)\)/g, function(match, linkText, url) {
+                    // For internal links that don't start with http
+                    if (!url.startsWith('http')) {
+                        return `<a href="${url}" class="chat-link">${linkText}</a>`;
+                    }
+                    // For external links
+                    return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="chat-link">${linkText}</a>`;
+                });
+                
+                message.innerHTML = processedText;
+            });
+        });
+    </script>
+</body>
+</html>
