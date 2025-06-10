@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Theme - WordPress Automation Tool</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        .theme-card {
+            background-color: rgba(128, 0, 0, 0.5);
+            border: 2px solid maroon;
+            margin-bottom: 20px;
+        }
+        .theme-card .btn-check:checked + .btn-outline-primary {
+            background-color: #0d6efd !important;
+            color: white !important;
+            border-color: white !important;
+        }
+        .theme-card .btn-outline-primary:hover {
+            background-color: #590000 !important;
+            color: white !important;
+            border-color: white !important;
+        }
+        .theme-card .btn-check:checked + .btn-outline-primary h4,
+        .theme-card .btn-check:checked + .btn-outline-primary p {
+            color: white !important;
+        }
+        .theme-card .btn-outline-primary {
+            color: white !important;
+            border-color: white !important;
+        }
+        .recommended-plugins {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 10px;
+        }
+        .theme-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    {% include 'bubble_background.html' %}
+    {% include 'header.html' %}
+    <script src="{{ url_for('static', filename='js/progress.js') }}"></script>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="stage-container">
+                <div class="pricing-card" style="background: rgba(255, 212, 239, 0.1); radius 5px;">
+                    <h2 class="text-center mb-4">Stage 4: Choose Your Theme</h2>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 40%" aria-valuenow="40.0" aria-valuemin="0" aria-valuemax="100"></div>
+                        <div class="progress-text">Stage 4/10</div>
+                    </div>
+                    <p class="text-center mb-4">Select a theme for your {{ category.name }} website</p>
+
+                    <form method="POST" action="{{ url_for('select_theme') }}">
+                        <div class="theme-container">
+                            {% if themes and themes|length > 0 %}
+                                {% for theme in themes %}
+                                <div class="theme-card" style="background-color: maroon; border: 2px solid #f3aad2; border-radius: 15px;">
+                                    <input type="radio" class="btn-check" name="theme" id="{{ theme.id }}" value="{{ theme.id }}" required>
+                                    <label class="btn btn-outline-primary w-100 h-100 text-start p-4" for="{{ theme.id }}" style="color: #FFD1DC; background-color: transparent; border: none;">
+                                        <h4 style="color: #FFD1DC;">{{ theme.name }}</h4>
+                                        <p class="mb-3" style="color: #FFD1DC;">{{ theme.description }}</p>
+                                        <div class="text-center">
+                                            <img src="{{ theme.thumbnail_url|default('/static/images/theme-placeholder.jpg') }}" alt="{{ theme.name }}" class="img-fluid mb-3" style="max-height: 150px; border-radius: 10px; background-color: #FFD1DC; padding: 5px;">
+                                        </div>
+                                        {% if theme.demo_url %}
+                                        <div class="text-center">
+                                            <a href="{{ theme.demo_url }}" target="_blank" class="btn btn-sm" style="background-color: #FFD1DC; color: maroon;">View Demo</a>
+                                        </div>
+                                        {% endif %}
+                                    </label>
+                                </div>
+                                {% endfor %}
+                            {% else %}
+                                <div class="col-md-12">
+                                    <div class="alert alert-info">
+                                        Loading themes for this category...
+                                        <script>
+                                            // Reload the page after a short delay to show generated themes
+                                            setTimeout(function() {
+                                                window.location.reload();
+                                            }, 2000);
+                                        </script>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                       <button type="submit" class="btn btn-primary w-100 mt-4">Select Theme</button>
+                   </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    {% include 'footer.html' %}
+</body>
+</html>
