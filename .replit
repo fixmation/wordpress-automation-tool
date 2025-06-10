@@ -1,0 +1,24 @@
+modules = ["python-3.11", "nodejs-20:v8-20230920-bd784b9"]
+
+[workflows]
+runButton = "Run WordPress App"
+
+[[workflows.workflow]]
+name = "Run WordPress App"
+author = 42229000
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd WordPressAutomationTool/WordPress && PYTHONPATH=$PYTHONPATH:. python main.py"
+
+[nix]
+deps = ["poetry", "nodejs"]
+
+[[ports]]
+localPort = 5000
+externalPort = 80
+
+[deployment]
+run = ["sh", "-c", "cd WordPressAutomationTool/WordPress && FLASK_ENV=production gunicorn --workers 4 --bind 0.0.0.0:5000 main:app"]
+build = ["sh", "-c", "npm install && poetry install"]
