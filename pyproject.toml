@@ -1,0 +1,25 @@
+
+[tool.poetry]
+name = "wordpress-automation-tool"
+version = "0.1.0"
+description = "WordPress Automation Tool with Flask"
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = ">=3.11"
+flask = "^3.0.1"
+flask-login = "^0.6.3"
+flask-sqlalchemy = "^3.1.1"
+flask-limiter = "^3.12"
+google-generativeai = "^0.8.5"
+googletrans = "4.0.0rc1"
+stripe = "^12.1.0"
+werkzeug = "^3.0.1"
+requests = "*"
+requests-oauthlib = "*"
+markdown = "^3.5.1"
+wordpress-api = "^1.2.9"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
