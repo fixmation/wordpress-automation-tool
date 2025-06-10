@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Builder - WordPress Automation Tool</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    {% include 'bubble_background.html' %}
+    {% include 'header.html' %}
+    
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="pricing-card">
+                    <h2 class="text-center mb-4">WordPress Website Builder</h2>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4>What is WordPress Website Builder?</h4>
+                            <p>Our WordPress Website Builder is an AI-powered tool that simplifies website creation for businesses and individuals. With just a few clicks, you can create a professional, fully-functional website tailored to your specific needs.</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h4>Key Features</h4>
+                            <ul>
+                                <li>AI-driven website design</li>
+                                <li>Automated theme selection</li>
+                                <li>One-click WordPress installation</li>
+                                <li>Category-specific content generation</li>
+                                <li>SEO optimization</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-4">
+                        <a href="{{ url_for('wordpress_automation_demo') }}" class="btn btn-primary">Start Website Builder Demo</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    {% include 'footer.html' %}
+</body>
+</html>
