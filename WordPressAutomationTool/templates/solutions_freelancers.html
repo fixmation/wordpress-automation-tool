@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Freelancer Solutions - WordPress Automation Tool</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    {% include 'bubble_background.html' %}
+    {% include 'header.html' %}
+    
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="pricing-card">
+                    <h2 class="text-center mb-4">Freelancer Solutions</h2>
+                    
+                    <div class="row mb-5">
+                        <div class="col-md-12">
+                            <h4>Scale Your Freelance Business</h4>
+                            <p>Streamline your web development workflow and take on more clients with our powerful WordPress automation platform.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="card h-100" style="background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.3);">
+                                <div class="card-body" style="padding: 20px;">
+                                    <h5 class="text-white"><i class="fas fa-clock me-2"></i>Time-Saving Automation</h5>
+                                    <p style="color: #ffcbe5;">Reduce website setup time from days to minutes. Focus on growing your client base instead of repetitive tasks.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card h-100" style="background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.3);">
+                                <div class="card-body">
+                                    <h5 class="text-white"><i class="fas fa-users me-2"></i>Client Management</h5>
+                                    <p style="color: #ffcbe5;">Easily manage multiple client websites from a single dashboard. Streamline your workflow and boost productivity.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="card h-100" style="background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.3);">
+                                <div class="card-body">
+                                    <h5 class="text-white"><i class="fas fa-paint-brush me-2"></i>Professional Templates</h5>
+                                    <p style="color: #ffcbe5;">Access a wide range of professional templates that you can customize for your clients' unique needs.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card h-100" style="background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.3);">
+                                <div class="card-body">
+                                    <h5 class="text-white"><i class="fas fa-chart-line me-2"></i>Scale Your Business</h5>
+                                    <p style="color: #ffcbe5;">Take on more clients without increasing workload. Our automation tools help you grow your freelance business efficiently.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-4">
+                        <a href="{{ url_for('user_dashboard') }}" class="btn btn-primary">Start Your Free Trial</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    {% include 'footer.html' %}
+</body>
+</html>
