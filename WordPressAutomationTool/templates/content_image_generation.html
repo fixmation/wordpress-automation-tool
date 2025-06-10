@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Generation - WordPress Automation Tool</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+</head>
+<body>
+    {% include 'bubble_background.html' %}
+    {% include 'header.html' %}
+    <script src="{{ url_for('static', filename='js/progress.js') }}"></script>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="stage-container">
+                <div class="pricing-card" style="background: rgba(255, 212, 239, 0.1);">
+                    <h2 class="text-center mb-4">Stage 7: Content Generation</h2>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+                        <div class="progress-text">Stage 7/10</div>
+                    </div>
+                    <p class="text-center mb-4">Generate content for your website</p>
+
+                    {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            <div class="alert alert-success" style="background-color: #e1f4e9; color: #155724; border-color: #d4edda;">
+                                <i class="fas fa-check-circle"></i> 
+                                {% for message in messages %}
+                                    {{ message }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    {% endwith %}
+
+                    <form method="POST" action="{{ url_for('content_image_generation') }}">
+
+                        {% if not session.get('content_generated') %}
+                            {% with messages = get_flashed_messages(with_categories=true) %}
+                                {% if messages %}
+                                    {% for category, message in messages %}
+                                        <div class="alert alert-{{ category }}">
+                                            {{ message }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endwith %}
+                        {% else %}
+                            {% if request.args.get('debug') == 'true' and session.get('content_generation_prompt') %}
+                                <div class="card mt-3">
+                                    <div class="card-header">
+                                        <h5>Gemini Training Prompt (Debug Mode)</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <pre style="white-space: pre-wrap; word-break: keep-all;">{{ session.get('content_generation_prompt') }}</pre>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+
+                        <div class="d-flex justify-content-center gap-3 mt-3 mb-4">
+                            <button type="submit" class="btn btn-primary">Generate Content</button>
+                            <a href="{{ url_for('content_preview') }}" class="btn btn-success">Progress to Next Stage</a>
+                        </div>
+                        <div class="text-center">
+                            <p>Click "Generate Content" to create a professional content piece for your website.</p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    {% include 'footer.html' %}
+</body>
+</html>
